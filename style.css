@@ -294,7 +294,7 @@ input[type="number"] {
 #btnCalcular,
 #btnCalcularRes {
   background: linear-gradient(135deg, #000000ff, #0c0c0cff);
-  color: #fff;
+  color: #f9f7f7ff;
   font-size: 15px;
   border: 3px solid #000;
   border-radius: 20px;
