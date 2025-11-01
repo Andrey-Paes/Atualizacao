@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sensor PT</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <canvas id="chuva"></canvas>
+    <canvas id="raio"></canvas>
+    <!-- Botão de alternância de apps -->
+
+    <div id="conteudo">
+      <img src="Img/Sensor.svg" alt="Sensor" class="sensor-image" />
+
+      <div class="inputs-container">
+        <div class="sensor-container">
+          <label for="tipoSensor">Tipo de Sensor</label>
+          <select id="tipoSensor">
+            <option value="PT100">PT100</option>
+            <option value="PT500">PT500</option>
+            <option value="PT1000">PT1000</option>
+          </select>
+        </div>
+
+        <div class="input-box faixa-container">
+          <h3>Faixa do Sensor (°C)</h3>
+          <div class="inline-inputs">
+            <div class="custom-number">
+              <input
+                type="number"
+                id="faixaMin"
+                placeholder="Mín"
+                value="0"
+                step="1"
+              />
+            </div>
+
+            <div class="custom-number">
+              <input
+                type="number"
+                id="faixaMax"
+                placeholder="Máx"
+                value="100"
+                step="1"
+              />
+              <div class="controls">
+                <button class="btn-minus" data-target="faixaMax">−</button>
+                <button class="btn-plus" data-target="faixaMax">+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Resistência e Temperatura -->
+        <div class="resistencia-container">
+          <div>
+            <h3>Resistência</h3>
+            <input id="res" type="number" placeholder="Ω" />
+          </div>
+          <div>
+            <h3>Temperatura</h3>
+            <input id="inputTemp" type="number" placeholder="°C" />
+          </div>
+        </div>
+
+        <!-- Outputs -->
+        <div class="output-container">
+          <div>
+            <select id="tipoSaida">
+              <option value="ma">4–20 mA</option>
+              <option value="v">0–10 V</option>
+            </select>
+            <input id="saida" type="text" placeholder="Saída" readonly />
+          </div>
+          <div>
+            <h3>Output-Ω</h3>
+            <input id="saidaRes" type="text" placeholder="Ω" readonly />
+          </div>
+        </div>
+        <input
+          id="saidaTemp"
+          type="text"
+          placeholder="°C"
+          readonly
+          class="saida-temp-fixa"
+        />
+        <!-- Botões -->
+        <div class="input-box inline-inputs">
+          <button id="btnCalcular">Calcule°C</button>
+          <button id="btnCalcularRes">Calcule Ω</button>
+        </div>
+      </div>
+    </div>
+    <div class="app-toggle">
+      <label class="switch">
+        <input type="checkbox" id="toggleApp" />
+        <span class="slider"></span>
+      </label>
+      <span id="appName">PTEMP</span>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+      document.querySelectorAll(".btn-plus").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const target = document.getElementById(btn.dataset.target);
+          target.stepUp();
+        });
+      });
+
+      document.querySelectorAll(".btn-minus").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const target = document.getElementById(btn.dataset.target);
+          target.stepDown();
+        });
+      });
+    </script>
+  </body>
+</html>

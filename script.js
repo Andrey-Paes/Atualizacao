@@ -1,337 +1,255 @@
 document.addEventListener("DOMContentLoaded", () => {
   const loader = document.getElementById("loader");
   const conteudoApp = document.getElementById("conteudo");
+  // === CONFIGURAÇÃO DE CANVAS ===
+  const canvasChuva = document.getElementById("chuva");
+  const ctxChuva = canvasChuva.getContext("2d");
+  const canvasRaio = document.getElementById("raio");
+  const ctxRaio = canvasRaio.getContext("2d");
 
-  window.addEventListener("load", () => {
-    setTimeout(() => {
-      if (loader) {
-        loader.classList.add("fade-out");
-      }
-      if (conteudoApp) {
-        conteudoApp.classList.add("fade-in");
-      }
-    }, 4000);
-  });
-});
+  function resizeCanvas() {
+    canvasChuva.width = window.innerWidth;
+    canvasChuva.height = window.innerHeight;
+    canvasRaio.width = window.innerWidth;
+    canvasRaio.height = window.innerHeight;
+  }
+  resizeCanvas();
+  window.addEventListener("resize", resizeCanvas);
 
-// ===== Fundo estilo Galáxia =====
-const canvas = document.getElementById("galaxy");
-const ctx = canvas.getContext("2d");
-
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-let estrelas = [];
-for (let i = 0; i < 200; i++) {
-  estrelas.push({
-    x: Math.random() * canvas.width,
-    y: Math.random() * canvas.height,
-    raio: Math.random() * 2,
-    velocidade: Math.random() * 0.5 + 0.2,
-  });
-}
-
-function animar() {
-  ctx.fillStyle = "rgba(29, 16, 41, 0.84)";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  ctx.fillStyle = "white";
-  ctx.beginPath();
-  estrelas.forEach((estrela) => {
-    ctx.moveTo(estrela.x, estrela.y);
-    ctx.arc(estrela.x, estrela.y, estrela.raio, 0, Math.PI * 2);
-  });
-  ctx.fill();
-
-  estrelas.forEach((estrela) => {
-    estrela.y += estrela.velocidade;
-    if (estrela.y > canvas.height) {
-      estrela.x = Math.random() * canvas.width;
-      estrela.y = 0;
+  // === CHUVA REALISTA ===
+  class Gota {
+    constructor() {
+      this.reset();
     }
-  });
 
-  requestAnimationFrame(animar);
-}
-animar();
+    reset() {
+      this.x = Math.random() * canvasChuva.width;
+      this.y = Math.random() * -canvasChuva.height;
+      this.velY = 4 + Math.random() * 25; // velocidade vertical
+      this.velX = -1 + Math.random() * 1; // vento horizontal
+      this.tamanho = 1 + Math.random() * 1.0; // espessura
+      this.opacity = 0.2 + Math.random() * 0.1; // opacidade
+    }
 
-window.addEventListener("resize", () => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-});
+    desenhar() {
+      ctxChuva.beginPath();
+      ctxChuva.strokeStyle = `rgba(173,216,230,${this.opacity})`;
+      ctxChuva.lineWidth = this.tamanho;
+      ctxChuva.moveTo(this.x, this.y);
+      ctxChuva.lineTo(this.x + this.velX * 5, this.y + this.velY * 2);
+      ctxChuva.stroke();
+    }
 
-// ===== tabela PT100 0..150 (valores em ohms) =====
-const tabelaPT100 = [
-  { t: 0, R: 100.0 },
-  { t: 1, R: 100.39 },
-  { t: 2, R: 100.78 },
-  { t: 3, R: 101.17 },
-  { t: 4, R: 101.56 },
-  { t: 5, R: 101.95 },
-  { t: 6, R: 102.34 },
-  { t: 7, R: 102.73 },
-  { t: 8, R: 103.12 },
-  { t: 9, R: 103.51 },
-  { t: 10, R: 103.9 },
-  { t: 11, R: 104.29 },
-  { t: 12, R: 104.68 },
-  { t: 13, R: 105.07 },
-  { t: 14, R: 105.46 },
-  { t: 15, R: 105.85 },
-  { t: 16, R: 106.24 },
-  { t: 17, R: 106.63 },
-  { t: 18, R: 107.02 },
-  { t: 19, R: 107.4 },
-  { t: 20, R: 107.79 },
-  { t: 21, R: 108.18 },
-  { t: 22, R: 108.57 },
-  { t: 23, R: 108.96 },
-  { t: 24, R: 109.35 },
-  { t: 25, R: 109.74 },
-  { t: 26, R: 110.13 },
-  { t: 27, R: 110.52 },
-  { t: 28, R: 110.91 },
-  { t: 29, R: 111.3 },
-  { t: 30, R: 111.67 },
-  { t: 31, R: 112.05 },
-  { t: 32, R: 112.44 },
-  { t: 33, R: 112.83 },
-  { t: 34, R: 113.22 },
-  { t: 35, R: 113.61 },
-  { t: 36, R: 114.0 },
-  { t: 37, R: 114.39 },
-  { t: 38, R: 114.78 },
-  { t: 39, R: 115.17 },
-  { t: 40, R: 115.54 },
-  { t: 41, R: 115.92 },
-  { t: 42, R: 116.31 },
-  { t: 43, R: 116.7 },
-  { t: 44, R: 117.09 },
-  { t: 45, R: 117.48 },
-  { t: 46, R: 117.87 },
-  { t: 47, R: 118.26 },
-  { t: 48, R: 118.65 },
-  { t: 49, R: 119.04 },
-  { t: 50, R: 119.4 },
-  { t: 51, R: 119.78 },
-  { t: 52, R: 120.17 },
-  { t: 53, R: 120.56 },
-  { t: 54, R: 120.95 },
-  { t: 55, R: 121.34 },
-  { t: 56, R: 121.73 },
-  { t: 57, R: 122.12 },
-  { t: 58, R: 122.51 },
-  { t: 59, R: 122.9 },
-  { t: 60, R: 123.29 },
-  { t: 61, R: 123.67 },
-  { t: 62, R: 124.06 },
-  { t: 63, R: 124.45 },
-  { t: 64, R: 124.84 },
-  { t: 65, R: 125.23 },
-  { t: 66, R: 125.62 },
-  { t: 67, R: 126.01 },
-  { t: 68, R: 126.4 },
-  { t: 69, R: 126.79 },
-  { t: 70, R: 127.18 },
-  { t: 71, R: 127.57 },
-  { t: 72, R: 127.95 },
-  { t: 73, R: 128.34 },
-  { t: 74, R: 128.73 },
-  { t: 75, R: 129.12 },
-  { t: 76, R: 129.51 },
-  { t: 77, R: 129.9 },
-  { t: 78, R: 130.29 },
-  { t: 79, R: 130.68 },
-  { t: 80, R: 131.07 },
-  { t: 81, R: 131.46 },
-  { t: 82, R: 131.85 },
-  { t: 83, R: 132.23 },
-  { t: 84, R: 132.62 },
-  { t: 85, R: 133.01 },
-  { t: 86, R: 133.4 },
-  { t: 87, R: 133.79 },
-  { t: 88, R: 134.18 },
-  { t: 89, R: 134.57 },
-  { t: 90, R: 134.96 },
-  { t: 91, R: 135.35 },
-  { t: 92, R: 135.74 },
-  { t: 93, R: 136.13 },
-  { t: 94, R: 136.51 },
-  { t: 95, R: 136.9 },
-  { t: 96, R: 137.29 },
-  { t: 97, R: 137.68 },
-  { t: 98, R: 138.07 },
-  { t: 99, R: 138.46 },
-  { t: 100, R: 138.5 },
-  { t: 101, R: 138.89 },
-  { t: 102, R: 139.28 },
-  { t: 103, R: 139.67 },
-  { t: 104, R: 140.06 },
-  { t: 105, R: 140.45 },
-  { t: 106, R: 140.84 },
-  { t: 107, R: 141.23 },
-  { t: 108, R: 141.62 },
-  { t: 109, R: 142.01 },
-  { t: 110, R: 142.4 },
-  { t: 111, R: 142.79 },
-  { t: 112, R: 143.18 },
-  { t: 113, R: 143.57 },
-  { t: 114, R: 143.96 },
-  { t: 115, R: 144.35 },
-  { t: 116, R: 144.74 },
-  { t: 117, R: 145.13 },
-  { t: 118, R: 145.52 },
-  { t: 119, R: 145.91 },
-  { t: 120, R: 146.3 },
-  { t: 121, R: 146.69 },
-  { t: 122, R: 147.08 },
-  { t: 123, R: 147.47 },
-  { t: 124, R: 147.86 },
-  { t: 125, R: 148.25 },
-  { t: 126, R: 148.64 },
-  { t: 127, R: 149.03 },
-  { t: 128, R: 149.42 },
-  { t: 129, R: 149.81 },
-  { t: 130, R: 150.2 },
-  { t: 131, R: 150.59 },
-  { t: 132, R: 150.98 },
-  { t: 133, R: 151.37 },
-  { t: 134, R: 151.76 },
-  { t: 135, R: 152.15 },
-  { t: 136, R: 152.54 },
-  { t: 137, R: 152.93 },
-  { t: 138, R: 153.32 },
-  { t: 139, R: 153.71 },
-  { t: 140, R: 154.1 },
-  { t: 141, R: 154.49 },
-  { t: 142, R: 154.88 },
-  { t: 143, R: 155.27 },
-  { t: 144, R: 155.66 },
-  { t: 145, R: 156.05 },
-  { t: 146, R: 156.44 },
-  { t: 147, R: 156.83 },
-  { t: 148, R: 157.22 },
-  { t: 149, R: 157.61 },
-  { t: 150, R: 158.0 },
-  { t: 151, R: 158.39 },
-  { t: 152, R: 158.78 },
-  { t: 153, R: 159.17 },
-  { t: 154, R: 159.56 },
-  { t: 155, R: 159.95 },
-  { t: 156, R: 160.34 },
-  { t: 157, R: 160.73 },
-  { t: 158, R: 161.12 },
-  { t: 159, R: 161.51 },
-  { t: 160, R: 161.9 },
-  { t: 161, R: 162.29 },
-  { t: 162, R: 162.68 },
-  { t: 163, R: 163.07 },
-  { t: 164, R: 163.46 },
-  { t: 165, R: 163.85 },
-  { t: 166, R: 164.24 },
-  { t: 167, R: 164.63 },
-  { t: 168, R: 165.02 },
-  { t: 169, R: 165.41 },
-  { t: 170, R: 165.8 },
-  { t: 171, R: 166.19 },
-  { t: 172, R: 166.58 },
-  { t: 173, R: 166.97 },
-  { t: 174, R: 167.36 },
-  { t: 175, R: 167.75 },
-  { t: 176, R: 168.14 },
-  { t: 177, R: 168.53 },
-  { t: 178, R: 168.92 },
-  { t: 179, R: 169.31 },
-  { t: 180, R: 169.7 },
-  { t: 181, R: 170.09 },
-  { t: 182, R: 170.48 },
-  { t: 183, R: 170.87 },
-  { t: 184, R: 171.26 },
-  { t: 185, R: 171.65 },
-  { t: 186, R: 172.04 },
-  { t: 187, R: 172.43 },
-  { t: 188, R: 172.82 },
-  { t: 189, R: 173.21 },
-  { t: 190, R: 173.6 },
-  { t: 191, R: 173.99 },
-  { t: 192, R: 174.38 },
-  { t: 193, R: 174.77 },
-  { t: 194, R: 175.16 },
-  { t: 195, R: 175.55 },
-  { t: 196, R: 175.94 },
-  { t: 197, R: 176.33 },
-  { t: 198, R: 176.72 },
-  { t: 199, R: 177.11 },
-  { t: 200, R: 177.5 },
-];
+    atualizar() {
+      this.x += this.velX;
+      this.y += this.velY;
 
-// === elementos DOM ===
-const faixaEl = document.getElementById("faixa"); // select: 100 ou 150
-const resEl = document.getElementById("res"); // input resistência (Ω)
-const saidaEl = document.getElementById("saida"); // output mA
-const tempEl = document.getElementById("saidaTemp"); // output temperatura
-const btn = document.getElementById("btnCalcular");
-
-// === função: converte resistência -> temperatura via interpolação linear ===
-function resistenciaParaTemperatura(R) {
-  if (isNaN(R)) return null;
-  const pts = tabelaPT100;
-
-  // fora do intervalo da tabela
-  if (R < pts[0].R || R > pts[pts.length - 1].R) return null;
-
-  // procurar intervalo onde R_i <= R <= R_{i+1}
-  for (let i = 0; i < pts.length - 1; i++) {
-    const p1 = pts[i],
-      p2 = pts[i + 1];
-    if ((R >= p1.R && R <= p2.R) || (R >= p2.R && R <= p1.R)) {
-      const frac = (R - p1.R) / (p2.R - p1.R);
-      const temp = p1.t + frac * (p2.t - p1.t);
-      return temp;
+      if (
+        this.y > canvasChuva.height ||
+        this.x < 0 ||
+        this.x > canvasChuva.width
+      ) {
+        this.reset();
+      }
     }
   }
 
-  // caso exato no ultimo ponto
-  if (R === pts[pts.length - 1].R) return pts[pts.length - 1].t;
-  return null;
+  // Cria muitas gotas para profundidade
+  const gotas = [];
+  for (let i = 0; i < 600; i++) {
+    gotas.push(new Gota());
+  }
+
+  function animarChuva() {
+    ctxChuva.clearRect(0, 0, canvasChuva.width, canvasChuva.height);
+
+    // Fundo levemente azul escuro
+    ctxChuva.fillStyle = "rgba(167, 166, 173, 0.01)";
+    ctxChuva.fillRect(0, 0, canvasChuva.width, canvasChuva.height);
+
+    for (let gota of gotas) {
+      gota.desenhar();
+      gota.atualizar();
+    }
+
+    requestAnimationFrame(animarChuva);
+  }
+  animarChuva();
+
+  function flashRaio(opacidade = 0.4) {
+    ctxRaio.fillStyle = `rgba(255,255,255,${opacidade})`;
+    ctxRaio.fillRect(0, 0, canvasRaio.width, canvasRaio.height);
+    setTimeout(
+      () => ctxRaio.clearRect(0, 0, canvasRaio.width, canvasRaio.height),
+      80
+    );
+  }
+
+  function desenharRaio(x, y, profundidade = 0) {
+    if (profundidade > 3) return;
+
+    const comprimento = 50 + Math.random() * 50;
+    const angulo = ((Math.random() - 0.5) * Math.PI) / 4;
+    const x2 = x + comprimento * Math.sin(angulo);
+    const y2 = y + comprimento * Math.cos(angulo);
+
+    ctxRaio.beginPath();
+    ctxRaio.moveTo(x, y);
+    ctxRaio.lineTo(x2, y2);
+    ctxRaio.strokeStyle = "rgba(250, 250, 251, 0.94)";
+    ctxRaio.lineWidth = 2;
+    ctxRaio.shadowBlur = 20;
+    ctxRaio.shadowColor = "white";
+    ctxRaio.stroke();
+
+    if (Math.random() < 0.9) desenharRaio(x2, y2, profundidade + 1);
+  }
+
+  // Raio aleatório com piscadas múltiplas
+  function raioAleatorio() {
+    const x = Math.random() * canvasRaio.width;
+    const piscadas = 1 + Math.floor(Math.random() * 3); // 1 a 3 piscadas
+    let i = 0;
+
+    function piscar() {
+      const opacidade = 0.3 + Math.random() * 0.3; // 0.3 a 0.6
+      desenharRaio(x, 20);
+      flashRaio(opacidade);
+      i++;
+      if (i < piscadas) {
+        // intervalo curto entre piscadas (50~200ms)
+        setTimeout(piscar, 50 + Math.random() * 150);
+      }
+    }
+
+    piscar();
+
+    // próximo evento de raio depois de 8 a 12 segundos
+    const tempoProximo = 8000 + Math.random() * 4000;
+    setTimeout(raioAleatorio, tempoProximo);
+  }
+
+  // inicia o loop
+  raioAleatorio();
+});
+
+// === elementos DOM ===
+const faixaMinEl = document.getElementById("faixaMin");
+const faixaMaxEl = document.getElementById("faixaMax");
+const resEl = document.getElementById("res");
+const saidaEl = document.getElementById("saida");
+const tempEl = document.getElementById("saidaTemp");
+const inputTempEl = document.getElementById("inputTemp");
+const saidaResEl = document.getElementById("saidaRes");
+const btn = document.getElementById("btnCalcular");
+const btnCalcularRes = document.getElementById("btnCalcularRes");
+const tipoSensorEl = document.getElementById("tipoSensor");
+
+// === função para obter o R0 conforme o tipo de sensor ===
+function obterR0() {
+  const tipo = tipoSensorEl.value;
+  if (tipo === "PT100") return 100;
+  if (tipo === "PT500") return 500;
+  if (tipo === "PT1000") return 1000;
+  return 100;
 }
 
-// === função principal: calcula temperatura + 4-20 mA ===
-function calcular() {
-  const faixa = parseInt(faixaEl.value, 10); // 50, 100, 150 ou 200
-  const R = parseFloat(resEl.value);
+// === converte resistência -> temperatura ===
+function resistenciaParaTemperatura(R) {
+  const R0 = obterR0();
+  const A = 3.9083e-3;
+  const B = -5.775e-7;
 
-  // validações
-  if (isNaN(R)) {
-    alert("Digite a resistência (Ω).");
+  if (R <= 0) return null;
+
+  const discriminante = A * A - 4 * B * (1 - R / R0);
+  if (discriminante < 0) return null;
+
+  const T = (-A + Math.sqrt(discriminante)) / (2 * B);
+  if (T < -200 || T > 850) return null;
+
+  return T;
+}
+
+// === converte temperatura -> resistência ===
+function temperaturaParaResistencia(T) {
+  const R0 = obterR0();
+  const A = 3.9083e-3;
+  const B = -5.775e-7;
+
+  if (T < -200 || T > 850) return null;
+
+  return R0 * (1 + A * T + B * T * T);
+}
+
+//=== cálculo resistência -> temperatura -> corrente ou tensão ===
+function calcular() {
+  const faixaMin = parseFloat(faixaMinEl.value);
+  const faixaMax = parseFloat(faixaMaxEl.value);
+  const R = parseFloat(resEl.value);
+  const tipoSaida = document.getElementById("tipoSaida").value; // pega a escolha do usuário
+
+  tempEl.value = "";
+  saidaEl.value = "";
+
+  if (isNaN(R) || R <= 0) {
+    alert("⚠️ Digite uma resistência válida (Ω) maior que 0.");
+    resEl.focus();
     return;
   }
 
-  if (![50, 100, 150, 200].includes(faixa)) {
-    alert("Selecione a faixa (50, 100, 150 ou 200).");
+  if (faixaMin < -0 || faixaMax > 850) {
+    alert("❌ Faixa inválida: -0 a 850°C.");
+    return;
+  }
+
+  if (faixaMin >= faixaMax) {
+    alert("❌ O valor mínimo deve ser MENOR que o máximo.");
+    faixaMinEl.focus();
     return;
   }
 
   const temp = resistenciaParaTemperatura(R);
-
   if (temp === null) {
-    tempEl.value = "Fora da tabela";
+    tempEl.value = "Fora da faixa";
     saidaEl.value = "—";
     return;
   }
 
-  // mA: 4 + (temp / faixa) * 16
-  let mA = 4 + (temp / faixa) * 16;
-  if (mA < 4) mA = 4;
-  if (mA > 20) mA = 20;
-
-  // exibir resultados (formatados)
   tempEl.value = temp.toFixed(2) + " °C";
-  saidaEl.value = mA.toFixed(2) + " mA";
+
+  if (tipoSaida === "ma") {
+    let mA = 4 + ((temp - faixaMin) / (faixaMax - faixaMin)) * 16;
+    if (mA < 4) mA = 4;
+    if (mA > 20) mA = 20;
+    saidaEl.value = mA.toFixed(2) + " mA";
+  } else if (tipoSaida === "v") {
+    let v = ((temp - faixaMin) / (faixaMax - faixaMin)) * 10;
+    if (v < 0) v = 0;
+    if (v > 10) v = 10;
+    saidaEl.value = v.toFixed(2) + " V";
+  }
+}
+// === cálculo temperatura -> resistência ===
+function calcularResistencia() {
+  const T = parseFloat(inputTempEl.value);
+  saidaResEl.value = "";
+
+  if (isNaN(T)) {
+    alert("⚠️ Digite uma temperatura válida.");
+    inputTempEl.focus();
+    return;
+  }
+
+  const R = temperaturaParaResistencia(T);
+  if (R === null) {
+    alert("❌ Temperatura fora da faixa: -200 a 850°C.");
+    return;
+  }
+
+  saidaResEl.value = R.toFixed(2) + " Ω";
 }
 
-// ligar botão e permitir Enter no campo resistência
+// === eventos ===
 btn.addEventListener("click", calcular);
-resEl.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") calcular();
-});
+btnCalcularRes.addEventListener("click", calcularResistencia);
