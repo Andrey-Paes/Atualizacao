@@ -348,10 +348,6 @@ body.dark-mode #btnCalcularRes {
   box-shadow: 0 0 15px rgba(9, 9, 9, 0.91);
 }
 
-body.dark-mode .sensor-image {
-  content: url("Img/SensorDark.png"); /* troca o sensor no modo dark */
-}
-
 /* === SWITCH DARK/LIGHT === */
 .theme-toggle {
   position: absolute;
