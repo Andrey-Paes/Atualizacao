@@ -73,7 +73,7 @@ input[type="number"] {
 
 .sensor-container label {
   position: fixed;
-  bottom: 385px;
+  bottom: 355px;
   font-family: arial;
   color: #6a6767ff;
   font-size: 12px;
@@ -105,7 +105,7 @@ input[type="number"] {
   width: 215px;
   box-shadow: 0 0 8px rgba(116, 113, 113, 0.8);
   position: fixed;
-  bottom: 250px;
+  bottom: 225px;
   left: 50%;
   transform: translateX(-50%);
   color: #8c8989ff;
@@ -264,7 +264,7 @@ input[type="number"] {
 }
 #tipoSensor {
   position: fixed;
-  bottom: 340px;
+  bottom: 310px;
   font-size: 14px;
   color: #ffffff;
   text-align: center;
