@@ -1,5 +1,6 @@
 /* ===== RESET ===== */
 * {
+  font-family: Elms Sans, sans-serif;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -9,7 +10,7 @@
 body {
   overflow: hidden;
   height: 100vh;
-  background: linear-gradient(to bottom, #06011fff, #020202fd);
+  background: linear-gradient(to bottom, #fcf9f9ff, #cdccccfd);
 }
 
 canvas {
@@ -42,12 +43,12 @@ input[type="number"] {
 /* ===== SENSOR (IMAGEM) ===== */
 .sensor-image {
   position: fixed;
-  bottom: -150px;
+  bottom: -85px;
   left: 50%;
   transform: translateX(-50%);
-  width: 90vw;
-  max-width: 450px;
-  min-width: 450px;
+  width: 20vw;
+  max-width: 400px;
+  min-width: 380px;
 }
 
 /* ===== INPUTS PRINCIPAIS ===== */
@@ -74,18 +75,18 @@ input[type="number"] {
   position: fixed;
   bottom: 385px;
   font-family: arial;
-  color: white;
+  color: #6a6767ff;
   font-size: 12px;
 }
 
 .sensor-container select {
   appearance: none;
-  background-color: #000;
+  background: linear-gradient(135deg, #707070ff, #0c0c0dff);
   color: white;
-  border: 1px solid #000;
-  border-radius: 20px;
+  border: 1px solid #666464ff;
+  border-radius: 10px;
   padding: 8px 12px;
-  font-size: 12px;
+  font-size: 18px;
   text-align: center;
   cursor: pointer;
 }
@@ -96,21 +97,22 @@ input[type="number"] {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  background: #000000b1;
-  border-radius: 10px;
+  background: #7375752b;
+  border: 2px solid #8e8c8c4c;
+  border-radius: 20px;
   padding: 10px;
   height: 80px;
   width: 215px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 0 8px rgba(116, 113, 113, 0.8);
   position: fixed;
   bottom: 250px;
   left: 50%;
   transform: translateX(-50%);
-  color: white;
+  color: #8c8989ff;
 }
 
 .faixa-container h3 {
-  font-family: Montserrat, sans-serif;
+  color: #848383fb;
   font-size: 12px;
   margin-bottom: 5px;
 }
@@ -128,10 +130,11 @@ input[type="number"] {
   border-radius: 6px;
   font-size: 14px;
   text-align: center;
-  background: linear-gradient(to bottom, #16161654, #1d1c1c);
-  color: white;
-  border: none;
-  outline: none;
+  background: linear-gradient(to bottom, #fbfafa54, #efededff);
+  color: #5e5d5dff;
+  border: 2px solid #7573735e;
+  box-shadow: 0 0 8px rgba(177, 176, 176, 0.8);
+  outline: 1px solid #c5c1c15e;
 }
 
 /* ===== BLOCO: RESISTÊNCIA E TEMPERATURA (INPUTS) ===== */
@@ -141,7 +144,7 @@ input[type="number"] {
   align-items: flex-start; /* garante alinhamento uniforme pelo topo */
   gap: 40px;
   position: fixed;
-  bottom: 160px; /* mantém na posição atual aproximada */
+  bottom: 145px; /* mantém na posição atual aproximada */
   left: 50%;
   transform: translateX(-50%);
 }
@@ -155,30 +158,29 @@ input[type="number"] {
 
 .resistencia-container h3 {
   font-family: Montserrat, sans-serif;
-  color: #ffffff;
+  color: #868484ff;
   font-size: 18px;
   text-align: center;
   margin: 0;
-  text-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
 }
 
 .resistencia-container input {
   width: 95px;
   height: 35px;
-  border-radius: 6px;
+  border-radius: 15px;
   font-size: 16px;
   text-align: center;
-  background: #00000072; /* igual às outputs */
-  border: none;
-  outline: none;
-  color: #ffffff; /* texto branco */
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.7);
+  background: #e1d8d872; /* igual às outputs */
+  border: 2px solid #c4c1c15e;
+  outline: 1px solid #6564645e;
+  color: #404040ff; /* texto branco */
+  box-shadow: 0 0 8px rgba(107, 105, 105, 0.7);
   transition: all 0.2s ease-in-out;
 }
 
 .resistencia-container input:focus {
-  background: #0000009f;
-  box-shadow: 0 0 12px rgba(255, 0, 0, 1);
+  background: #ffffffff;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 1);
 }
 
 /* ===== BLOCO: OUTPUTS ===== */
@@ -188,7 +190,7 @@ input[type="number"] {
   align-items: flex-start;
   gap: 40px;
   position: fixed;
-  bottom: 90px;
+  bottom: 0px;
   left: 50%;
   transform: translateX(-50%);
 }
@@ -212,20 +214,20 @@ input[type="number"] {
 .output-container input {
   width: 100px;
   height: 35px;
-  border-radius: 6px;
+  border-radius: 15px;
   font-size: 16px;
   text-align: center;
-  background: #00000072;
-  color: #ff0000ff; /* verde para saída */
-  border: none;
-  outline: none;
+  background: #edebeb72;
+  color: #0033ffff; /* verde para saída */
+  border: 2px solid #c4c1c15e;
+  outline: 1px solid #6564645e;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.7);
   transition: all 0.2s ease-in-out;
 }
 
 .output-container input:focus {
   background: #fafafdfe;
-  box-shadow: 0 0 12px rgba(255, 0, 0, 1);
+  box-shadow: 0 0 12px rgba(34, 0, 255, 1);
 }
 .output-container select {
   position: relative;
@@ -247,24 +249,24 @@ input[type="number"] {
 /* ===== SAÍDA TEMPERATURA FIXA ===== */
 .saida-temp-fixa {
   position: fixed;
-  bottom: -140px;
-  left: 50%;
+  bottom: -55px;
+  left: 51%;
   transform: translateX(-50%);
-  width: 120px;
+  width: 100px;
   padding: 10px;
   font-size: 18px;
   text-align: center;
-  border-radius: 10px;
+  border-radius: 50px;
   border: none;
-  background: linear-gradient(to bottom, #000000b8, #01010195);
-  color: #fffefeff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+  background: linear-gradient(to bottom, #01a6ffff, #5558f5ff);
+  color: #fafafaff;
+  box-shadow: 0 0 10px rgba(108, 108, 109, 1);
 }
 #tipoSensor {
   position: fixed;
   bottom: 340px;
   font-size: 14px;
-  color: white;
+  color: #ffffff;
   text-align: center;
   margin-bottom: 5px;
 }
@@ -279,11 +281,12 @@ input[type="number"] {
 }
 .btn-minus,
 .btn-plus {
-  background: linear-gradient(135deg, #d502ff74, #002fffff);
-  color: white;
-  border: none;
+  background: linear-gradient(135deg, #f6f6f6ff, #eaeaeaff);
+  color: #757373ff;
+  border: 2px solid #e0ddddff;
   border-radius: 10px;
-  width: 30px;
+  box-shadow: 0 0 10px rgba(171, 169, 169, 0.8);
+  width: 40px;
   height: 30px;
   font-size: 20px;
   cursor: pointer;
@@ -293,24 +296,29 @@ input[type="number"] {
 /* ===== BOTÕES ===== */
 #btnCalcular,
 #btnCalcularRes {
-  background: linear-gradient(135deg, #000000ff, #0c0c0cff);
-  color: #f9f7f7ff;
-  font-size: 15px;
-  border: 3px solid #000;
-  border-radius: 20px;
+  position: relative;
+  display: flex;
+  bottom: 55px;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #fbfbfbff, #ffffffff);
+  color: #060606ff;
+  font-size: 17px;
+  border: 2px solid #d4d0d05e;
+  border-radius: 25px;
   margin: 10px auto;
   padding: 20px;
   cursor: pointer;
   transition: all 0.3s ease;
-  width: 150px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+  width: 120px;
+  box-shadow: 0 0 10px rgba(212, 208, 208, 1);
 }
 
 #btnCalcular:hover,
 #btnCalcularRes:hover {
-  background: linear-gradient(135deg, #ff0400ff, #ff5e01ff);
-  box-shadow: 0 0 15px #000000ff, 0 0 30px #000000ff;
-  transform: scale(1.05);
+  background: linear-gradient(135deg, #fcfbfbff, #ffffffff);
+  box-shadow: 0 0 15px #dcdcdcff, 0 0 30px #a4a3a3ff;
+  transform: scale(0.95);
 }
 
 /* ===== TOGGLE DO APP ===== */
