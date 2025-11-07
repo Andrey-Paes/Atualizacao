@@ -10,8 +10,14 @@
     />
     <link rel="stylesheet" href="style.css" />
   </head>
+
   <body>
-    <!-- Botão de alternância de apps -->
+    <!-- Botão deslizante de tema -->
+    <div class="theme-toggle">
+      <div id="toggleTheme" class="theme-switch">
+        <div class="switch-handle"></div>
+      </div>
+    </div>
 
     <div id="conteudo">
       <img src="Img/SensorFinal.png" alt="Sensor" class="sensor-image" />
@@ -55,7 +61,6 @@
           </div>
         </div>
 
-        <!-- Resistência e Temperatura -->
         <div class="resistencia-container">
           <div>
             <h3>Resistência</h3>
@@ -67,7 +72,6 @@
           </div>
         </div>
 
-        <!-- Outputs -->
         <div class="output-container">
           <div>
             <select id="tipoSaida">
@@ -81,6 +85,7 @@
             <input id="saidaRes" type="text" placeholder="Ω" readonly />
           </div>
         </div>
+
         <input
           id="saidaTemp"
           type="text"
@@ -88,7 +93,7 @@
           readonly
           class="saida-temp-fixa"
         />
-        <!-- Botões -->
+
         <div class="input-box inline-inputs">
           <button id="btnCalcular">Calcule°C</button>
           <button id="btnCalcularRes">Calcule Ω</button>
@@ -96,8 +101,11 @@
       </div>
     </div>
 
+    <!-- scripts -->
     <script src="script.js"></script>
+
     <script>
+      // Incremento/decremento dos botões + e -
       document.querySelectorAll(".btn-plus").forEach((btn) => {
         btn.addEventListener("click", () => {
           const target = document.getElementById(btn.dataset.target);
@@ -110,6 +118,21 @@
           const target = document.getElementById(btn.dataset.target);
           target.stepDown();
         });
+      });
+
+      // 🌙 Alternância de modo claro/escuro com botão deslizante
+      const toggleBtn = document.getElementById("toggleTheme");
+      const sensorImage = document.querySelector(".sensor-image");
+
+      toggleBtn.addEventListener("click", () => {
+        // Anima o fade de todo o corpo
+        document.body.classList.add("fade-out");
+
+        setTimeout(() => {
+          const isDark = document.body.classList.toggle("dark-mode");
+          sensorImage.src = isDark ? "Img/Dark.png" : "Img/SensorFinal.png";
+          document.body.classList.remove("fade-out");
+        }, 300);
       });
     </script>
   </body>
