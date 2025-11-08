@@ -447,54 +447,67 @@ body.dark-mode .btn-plus {
   border: 2px solid #2a2a2a;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.9);
 }
-/* === SWITCH DARK/LIGHT === */
+/* === SWITCH FIXO GLOBAL (NÃO SE MOVE NUNCA) === */
 .theme-toggle {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  z-index: 999;
+  position: fixed;
+  top: 25px; /* distância do topo */
+  right: 85px; /* distância da lateral direita */
+  z-index: 9999; /* garante que fique acima de tudo */
+  pointer-events: auto;
 }
-
-/* Estrutura do switch */
+#toggleTheme {
+  position: fixed;
+  top: 5px;
+  right: 10px;
+  z-index: 1000;
+  font-size: 14px;
+  border: 1px solid #dcdcdcd2;
+  color: #f9f8f8ff;
+  text-align: center;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .theme-switch {
   width: 60px;
   height: 30px;
-  background: linear-gradient(145deg, #e2e2e2, #ffffff);
+  background: #f7f5f5ff;
   border-radius: 30px;
   box-shadow: inset 3px 3px 6px #c9c9c9, inset -3px -3px 6px #ffffff;
-  display: flex;
   align-items: center;
+  justify-content: flex-start;
   cursor: pointer;
-  transition: background 0.3s ease, box-shadow 0.3s ease;
-  position: relative;
+  transition: background 0.5s ease, box-shadow 0.3s ease;
 }
 
-/* Cor do fundo do switch no modo escuro */
-body.dark-mode .theme-switch {
-  background: linear-gradient(145deg, #1e1e1fff, #0d0d13ff);
-  box-shadow: inset 3px 3px 6px #040404a5, inset -3px -3px 6px #333333;
-}
-
-/* Bolinha que desliza */
+/* Bolinha do switch */
 .switch-handle {
   width: 24px;
   height: 24px;
-  background: linear-gradient(145deg, #0383f9ff, #e8e0e0ff);
+  background: linear-gradient(145deg, #773dffff, #0c4cfcff);
   border-radius: 50%;
   position: absolute;
   left: 3px;
   transition: all 0.4s ease;
-  box-shadow: 2px 2px 5px rgba(10, 10, 10, 0.78);
+  box-shadow: 2px 2px 5px rgba(14, 0, 0, 1);
 }
 
-/* Quando estiver no modo escuro, a bolinha vai pra direita e fica branca */
+/* Modo escuro */
+body.dark-mode .theme-switch {
+  /* Removi a propriedade border-radius duplicada e incorreta (px) */
+  background: #090909ff;
+  border-radius: 30px;
+  border: none;
+  box-shadow: inset 3px 3px 6px #130101fa, inset -5px -3px 6px #333333;
+
+  /* 🌟 ADIÇÃO SOLICITADA 🌟 */
+  border: none; /* Você pode ajustar a espessura (2px) e a cor (black) */
+}
+
 body.dark-mode .switch-handle {
   left: 33px;
-  background: linear-gradient(145deg, #000364ff, #bf00ffff);
-  box-shadow: 2px 2px 5px rgba(3, 2, 18, 0.89);
-}
-.theme-switch:active .switch-handle {
-  transform: scale(0.9);
+  background: linear-gradient(145deg, #2c33ffff, #0e9bf2ff);
 }
 /* ===== RESPONSIVO ===== */
 @media (max-width: 340px) {
