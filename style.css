@@ -81,9 +81,9 @@ input[type="number"] {
 
 .sensor-container select {
   appearance: none;
-  background: linear-gradient(135deg, #707070ff, #0c0c0dff);
+  background: linear-gradient(135deg, #0015ffff, #21deffff);
   color: white;
-  border: 1px solid #666464ff;
+  border: 1px solid #c5c5c5ff;
   border-radius: 10px;
   padding: 8px 12px;
   font-size: 18px;
@@ -97,23 +97,23 @@ input[type="number"] {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  background: #7375752b;
-  border: 2px solid #8e8c8c4c;
+  background: #fffffffc;
+  border: 2px solid #cac8c84c;
   border-radius: 20px;
   padding: 10px;
   height: 80px;
   width: 215px;
-  box-shadow: 0 0 8px rgba(116, 113, 113, 0.8);
+  box-shadow: 0 0 8px rgba(194, 192, 192, 0.8);
   position: fixed;
   bottom: 225px;
   left: 50%;
   transform: translateX(-50%);
-  color: #8c8989ff;
+  color: #dfdfdfff;
 }
 
 .faixa-container h3 {
-  color: #848383fb;
-  font-size: 12px;
+  color: #8e8e91fb;
+  font-size: 14px;
   margin-bottom: 5px;
 }
 
@@ -130,11 +130,11 @@ input[type="number"] {
   border-radius: 6px;
   font-size: 14px;
   text-align: center;
-  background: linear-gradient(to bottom, #fbfafa54, #efededff);
-  color: #5e5d5dff;
-  border: 2px solid #7573735e;
+  background: linear-gradient(to bottom, #ffffffff, #f7f7f7ff);
+  color: #4e4f50ff;
+  border: 2px solid #dddcdc5e;
   box-shadow: 0 0 8px rgba(177, 176, 176, 0.8);
-  outline: 1px solid #c5c1c15e;
+  outline: 1px solid #e9e9e95e;
 }
 
 /* ===== BLOCO: RESISTÊNCIA E TEMPERATURA (INPUTS) ===== */
@@ -142,9 +142,9 @@ input[type="number"] {
   display: flex;
   justify-content: center;
   align-items: flex-start; /* garante alinhamento uniforme pelo topo */
-  gap: 40px;
+  gap: 35px;
   position: fixed;
-  bottom: 145px; /* mantém na posição atual aproximada */
+  bottom: 138px; /* mantém na posição atual aproximada */
   left: 50%;
   transform: translateX(-50%);
 }
@@ -157,8 +157,8 @@ input[type="number"] {
 }
 
 .resistencia-container h3 {
-  font-family: Montserrat, sans-serif;
-  color: #868484ff;
+  font-family: sans-serif;
+  color: #a1a1a1ff;
   font-size: 18px;
   text-align: center;
   margin: 0;
@@ -170,11 +170,11 @@ input[type="number"] {
   border-radius: 15px;
   font-size: 16px;
   text-align: center;
-  background: #e1d8d872; /* igual às outputs */
-  border: 2px solid #c4c1c15e;
-  outline: 1px solid #6564645e;
+  background: #ffffffff; /* igual às outputs */
+  border: 2px solid #dcdadaff;
+  outline: 1px solid #d3d3d3ff;
   color: #404040ff; /* texto branco */
-  box-shadow: 0 0 8px rgba(107, 105, 105, 0.7);
+  box-shadow: 0 0 8px rgba(184, 184, 184, 0.7);
   transition: all 0.2s ease-in-out;
 }
 
@@ -217,11 +217,11 @@ input[type="number"] {
   border-radius: 15px;
   font-size: 16px;
   text-align: center;
-  background: #edebeb72;
+  background: #fffdfdff;
   color: #0033ffff; /* verde para saída */
-  border: 2px solid #c4c1c15e;
+  border: 2px solid #d6d5d5ff;
   outline: 1px solid #6564645e;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 0 8px rgba(190, 189, 189, 1);
   transition: all 0.2s ease-in-out;
 }
 
@@ -231,15 +231,15 @@ input[type="number"] {
 }
 .output-container select {
   position: relative;
-  width: 95px;
+  width: 70px;
   height: 20px;
-  border-radius: 5px;
-  border: none;
+  border-radius: 10px;
+  border: 1px solid #c2bfbfff;
   text-align: center;
   font-size: 10px;
   outline: none;
-  background-color: #22222236;
-  color: white;
+  background: linear-gradient(to bottom, #4e62fbff, #57caffff);
+  color: #ffffffff;
   transition: 0.3s;
 }
 
@@ -258,10 +258,17 @@ input[type="number"] {
   text-align: center;
   border-radius: 50px;
   border: none;
-  background: linear-gradient(to bottom, #01a6ffff, #5558f5ff);
-  color: #fafafaff;
+  background: linear-gradient(to bottom, #01a6ff, #5558f5);
+  color: #fff !important;
   box-shadow: 0 0 10px rgba(108, 108, 109, 1);
 }
+
+/* Se for um input, garante que o texto placeholder também fique branco */
+.saida-temp-fixa::placeholder {
+  color: #fff !important;
+  opacity: 1;
+}
+
 #tipoSensor {
   position: fixed;
   bottom: 310px;
@@ -273,7 +280,7 @@ input[type="number"] {
 .controls {
   position: fixed;
   left: 50%;
-  bottom: -15px;
+  bottom: -18px;
   transform: translateX(-50%);
   justify-content: center;
   flex-direction: column;
@@ -281,12 +288,13 @@ input[type="number"] {
 }
 .btn-minus,
 .btn-plus {
-  background: linear-gradient(135deg, #f6f6f6ff, #eaeaeaff);
-  color: #757373ff;
+  background: linear-gradient(135deg, #f7f5f5ff, #fdfcfcff);
+  color: #a1a1a3ff;
   border: 2px solid #e0ddddff;
+  text-align: center;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(171, 169, 169, 0.8);
-  width: 40px;
+  width: 35px;
   height: 30px;
   font-size: 20px;
   cursor: pointer;
@@ -302,16 +310,16 @@ input[type="number"] {
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, #fbfbfbff, #ffffffff);
-  color: #060606ff;
+  color: #545454ff;
   font-size: 17px;
-  border: 2px solid #d4d0d05e;
+  border: 2px solid #e6e6e6fe;
   border-radius: 25px;
   margin: 10px auto;
   padding: 20px;
   cursor: pointer;
   transition: all 0.3s ease;
   width: 120px;
-  box-shadow: 0 0 10px rgba(212, 208, 208, 1);
+  box-shadow: 0 0 10px rgba(152, 152, 152, 1);
 }
 
 #btnCalcular:hover,
