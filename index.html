@@ -12,6 +12,18 @@
   </head>
 
   <body>
+    <section class="loader">
+      <div style="--i: 0" class="slider"></div>
+      <div style="--i: 1" class="slider"></div>
+      <div style="--i: 2" class="slider"></div>
+      <div style="--i: 3" class="slider"></div>
+      <div style="--i: 4" class="slider"></div>
+    </section>
+
+    <div id="app" style="display: none">
+      <!-- todo o conteúdo do seu app -->
+    </div>
+
     <div id="toggleTheme" class="theme-switch">
       <div class="switch-handle"></div>
     </div>
@@ -101,6 +113,16 @@
     <script src="script.js"></script>
 
     <script>
+      window.addEventListener("load", () => {
+        const loader = document.querySelector(".loader");
+        const app = document.getElementById("app");
+
+        // Espera 1 segundo pra suavizar a transição
+        setTimeout(() => {
+          loader.classList.add("hidden");
+          app.style.display = "block";
+        }, 6000);
+      });
       // Incremento/decremento dos botões + e -
       document.querySelectorAll(".btn-plus").forEach((btn) => {
         btn.addEventListener("click", () => {
