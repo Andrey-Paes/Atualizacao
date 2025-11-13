@@ -1,138 +1,51 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const loader = document.getElementById("loader");
-  const conteudoApp = document.getElementById("conteudo");
-  // === CONFIGURAÇÃO DE CANVAS ===
-  const canvasChuva = document.getElementById("chuva");
-  const ctxChuva = canvasChuva.getContext("2d");
-  const canvasRaio = document.getElementById("raio");
-  const ctxRaio = canvasRaio.getContext("2d");
+// === THEME TOGGLE + troca de imagem com fade (versão aprimorada) ===
+(function () {
+  const toggle = document.getElementById("toggleTheme");
+  const body = document.body;
+  const sensorImage = document.querySelector(".sensor-image");
 
-  function resizeCanvas() {
-    canvasChuva.width = window.innerWidth;
-    canvasChuva.height = window.innerHeight;
-    canvasRaio.width = window.innerWidth;
-    canvasRaio.height = window.innerHeight;
-  }
-  resizeCanvas();
-  window.addEventListener("resize", resizeCanvas);
+  // Pré-carrega as imagens pra evitar travamento na troca
+  const preload = (src) => {
+    const img = new Image();
+    img.src = src;
+  };
+  preload("Img/SensorFinal.png");
+  preload("Img/Darkv1.png");
 
-  // === CHUVA REALISTA ===
-  class Gota {
-    constructor() {
-      this.reset();
-    }
-
-    reset() {
-      this.x = Math.random() * canvasChuva.width;
-      this.y = Math.random() * -canvasChuva.height;
-      this.velY = 4 + Math.random() * 25; // velocidade vertical
-      this.velX = -1 + Math.random() * 1; // vento horizontal
-      this.tamanho = 1 + Math.random() * 1.0; // espessura
-      this.opacity = 0.2 + Math.random() * 0.1; // opacidade
-    }
-
-    desenhar() {
-      ctxChuva.beginPath();
-      ctxChuva.strokeStyle = `rgba(173,216,230,${this.opacity})`;
-      ctxChuva.lineWidth = this.tamanho;
-      ctxChuva.moveTo(this.x, this.y);
-      ctxChuva.lineTo(this.x + this.velX * 5, this.y + this.velY * 2);
-      ctxChuva.stroke();
-    }
-
-    atualizar() {
-      this.x += this.velX;
-      this.y += this.velY;
-
-      if (
-        this.y > canvasChuva.height ||
-        this.x < 0 ||
-        this.x > canvasChuva.width
-      ) {
-        this.reset();
-      }
-    }
+  // Função com fade controlado
+  function setSensorImage(src) {
+    if (!sensorImage) return;
+    sensorImage.style.transition = "opacity 0.4s ease";
+    sensorImage.style.opacity = "0";
+    setTimeout(() => {
+      sensorImage.src = src;
+      sensorImage.onload = () => {
+        sensorImage.style.opacity = "1";
+      };
+    }, 250);
   }
 
-  // Cria muitas gotas para profundidade
-  const gotas = [];
-  for (let i = 0; i < 600; i++) {
-    gotas.push(new Gota());
+  // === aplica tema salvo ===
+  const saved = localStorage.getItem("theme");
+  if (saved === "dark") {
+    body.classList.add("dark-mode");
+    setSensorImage("Img/Darkv1.png");
+  } else {
+    setSensorImage("Img/SensorFinal.png");
   }
 
-  function animarChuva() {
-    ctxChuva.clearRect(0, 0, canvasChuva.width, canvasChuva.height);
+  if (!toggle) return;
 
-    // Fundo levemente azul escuro
-    ctxChuva.fillStyle = "rgba(167, 166, 173, 0.01)";
-    ctxChuva.fillRect(0, 0, canvasChuva.width, canvasChuva.height);
+  // remove possíveis eventos duplicados
+  toggle.replaceWith(toggle.cloneNode(true));
+  const newToggle = document.getElementById("toggleTheme");
 
-    for (let gota of gotas) {
-      gota.desenhar();
-      gota.atualizar();
-    }
-
-    requestAnimationFrame(animarChuva);
-  }
-  animarChuva();
-
-  function flashRaio(opacidade = 0.4) {
-    ctxRaio.fillStyle = `rgba(255,255,255,${opacidade})`;
-    ctxRaio.fillRect(0, 0, canvasRaio.width, canvasRaio.height);
-    setTimeout(
-      () => ctxRaio.clearRect(0, 0, canvasRaio.width, canvasRaio.height),
-      80
-    );
-  }
-
-  function desenharRaio(x, y, profundidade = 0) {
-    if (profundidade > 3) return;
-
-    const comprimento = 50 + Math.random() * 50;
-    const angulo = ((Math.random() - 0.5) * Math.PI) / 4;
-    const x2 = x + comprimento * Math.sin(angulo);
-    const y2 = y + comprimento * Math.cos(angulo);
-
-    ctxRaio.beginPath();
-    ctxRaio.moveTo(x, y);
-    ctxRaio.lineTo(x2, y2);
-    ctxRaio.strokeStyle = "rgba(250, 250, 251, 0.94)";
-    ctxRaio.lineWidth = 2;
-    ctxRaio.shadowBlur = 20;
-    ctxRaio.shadowColor = "white";
-    ctxRaio.stroke();
-
-    if (Math.random() < 0.9) desenharRaio(x2, y2, profundidade + 1);
-  }
-
-  // Raio aleatório com piscadas múltiplas
-  function raioAleatorio() {
-    const x = Math.random() * canvasRaio.width;
-    const piscadas = 1 + Math.floor(Math.random() * 3); // 1 a 3 piscadas
-    let i = 0;
-
-    function piscar() {
-      const opacidade = 0.3 + Math.random() * 0.3; // 0.3 a 0.6
-      desenharRaio(x, 20);
-      flashRaio(opacidade);
-      i++;
-      if (i < piscadas) {
-        // intervalo curto entre piscadas (50~200ms)
-        setTimeout(piscar, 50 + Math.random() * 150);
-      }
-    }
-
-    piscar();
-
-    // próximo evento de raio depois de 8 a 12 segundos
-    const tempoProximo = 8000 + Math.random() * 4000;
-    setTimeout(raioAleatorio, tempoProximo);
-  }
-
-  // inicia o loop
-  raioAleatorio();
-});
-
+  newToggle.addEventListener("click", () => {
+    const isDark = body.classList.toggle("dark-mode");
+    localStorage.setItem("theme", isDark ? "dark" : "light");
+    setSensorImage(isDark ? "Img/Darkv1.png" : "Img/SensorFinal.png");
+  });
+})();
 // === elementos DOM ===
 const faixaMinEl = document.getElementById("faixaMin");
 const faixaMaxEl = document.getElementById("faixaMax");
