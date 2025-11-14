@@ -24,14 +24,17 @@
   filter: url(#goo);
 }
 .loader-footer {
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  color: #4f4d4dff;
+  position: fixed !important;
+  bottom: 15px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+
+  color: #4b4a4aff;
   font-size: 10px;
   font-family: Arial, sans-serif;
-  opacity: 0.7;
+  opacity: 0.8;
+  z-index: 10000;
+  pointer-events: none;
 }
 .loader.hidden {
   opacity: 0;
