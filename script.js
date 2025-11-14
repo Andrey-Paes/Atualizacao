@@ -1,3 +1,98 @@
+// =============================================================
+// 1. LÓGICA DO LOADER (Executa Imediatamente) 🚀
+// =============================================================
+
+const appLoader = document.querySelector(".loader");
+// Tempo de duração do loader (em milissegundos, ex: 2 segundos)
+const loaderDuration = 6000;
+
+if (appLoader) {
+  // Inicia o timer para ocultar o loader.
+  setTimeout(() => {
+    appLoader.classList.add("hidden");
+  }, loaderDuration);
+}
+
+// =============================================================
+// 2. CONTROLE DE TELAS (Executa Após o DOM carregar)
+// =============================================================
+document.addEventListener("DOMContentLoaded", () => {
+  // elementos principais
+  const homeScreen = document.getElementById("homeScreen");
+  const devScreen = document.getElementById("devScreen");
+  const conteudo = document.getElementById("conteudo");
+  const toggleTheme = document.getElementById("toggleTheme"); // switch de tema
+
+  // Obtenha os inputs de checkbox DENTRO dos labels (Ajuste para o switch animado)
+  const btnPTEMP = document.getElementById("btnPTEMP");
+  const btnMV = document.getElementById("btnMV");
+  const inputPTEMP = btnPTEMP.querySelector('input[type="checkbox"]');
+  const inputMV = btnMV.querySelector('input[type="checkbox"]');
+
+  const btnHomeDev = document.getElementById("btnHomeDev");
+  const btnHomeApp = document.getElementById("btnHomeApp");
+
+  // helpers pra mostrar/ocultar telas
+  function showHome() {
+    homeScreen.style.display = "flex";
+    devScreen.style.display = "none";
+    conteudo.style.display = "none";
+    toggleTheme.style.display = "none"; // esconde o switch na tela inicial
+
+    // ⚠️ REAJUSTE NECESSÁRIO PARA A ANIMAÇÃO DO SWITCH:
+    // Garante que ambos os switches voltem ao estado OFF (não checado) ao voltar para a Home
+    inputPTEMP.checked = false;
+    inputMV.checked = false;
+  }
+
+  function showApp() {
+    homeScreen.style.display = "none";
+    devScreen.style.display = "none";
+    conteudo.style.display = "block";
+    toggleTheme.style.display = "flex"; // mostra o switch no app
+  }
+
+  function showDev() {
+    homeScreen.style.display = "none";
+    devScreen.style.display = "flex";
+    conteudo.style.display = "none";
+    toggleTheme.style.display = "none"; // esconde o switch na tela de dev
+  }
+
+  // === estado inicial: HOME ===
+  showHome();
+
+  // === listeners ===
+  // ⚠️ ALTERADO: Usa "change" no input de checkbox para permitir a animação CSS.
+  inputPTEMP.addEventListener("change", () => {
+    if (inputPTEMP.checked) {
+      showApp();
+    } else {
+      // Opcional: Se desmarcar o PTEMP, volta para a home
+      showHome();
+    }
+  });
+
+  inputMV.addEventListener("change", () => {
+    if (inputMV.checked) {
+      showDev();
+    } else {
+      // Opcional: Se desmarcar o MV, volta para a home
+      showHome();
+    }
+  });
+
+  btnHomeDev.addEventListener("click", (e) => {
+    e.preventDefault();
+    showHome();
+  });
+
+  btnHomeApp.addEventListener("click", (e) => {
+    e.preventDefault();
+    showHome();
+  });
+});
+// (O resto do seu código, como o theme toggle e as funções de cálculo, vem aqui)
 // === THEME TOGGLE + troca de imagem com fade (versão aprimorada) ===
 (function () {
   const toggle = document.getElementById("toggleTheme");
