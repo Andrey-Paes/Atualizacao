@@ -5,13 +5,15 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+/* ===== LOADER ===== */
 .loader {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: #000000ff; /* Fundo do loader (ajuste conforme seu tema) */
+  background: #000000ff; /* Fundo do loader */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -19,18 +21,20 @@
   opacity: 1;
   visibility: visible;
   transition: opacity 0.6s ease, visibility 0.6s ease;
-  filter: url(#goo); /* Mantenha o filtro do seu loader */
+  filter: url(#goo);
 }
+
 .loader.hidden {
   opacity: 0;
   visibility: hidden;
-  /* Impede que o usuário clique no loader invisível */
   pointer-events: none;
 }
+
 #goo {
   display: none;
 }
 
+/* Animação do Loader */
 .loader:before,
 .loader:after {
   content: "";
@@ -71,125 +75,29 @@
     transform: translateY(-70%);
   }
 }
-/* Pré-carrega imagem do modo escuro de forma invisível */
-body::after {
-  content: "";
-  background: url("Img/Darkv1.png") no-repeat;
-  position: absolute;
-  width: 0;
-  height: 0;
-  overflow: hidden;
-  visibility: hidden;
-}
-/* === EFEITO DE CHUVA E RELÂMPAGO === */
-body {
-  transition: background-color 0.5s ease, color 0.5s ease;
-  opacity: 1;
-  overflow: hidden;
-  height: 100vh;
-  background: linear-gradient(to bottom, #fcf9f9ff, #cdccccfd);
-}
-.app-icon {
-  width: 100px;
-  height: 100px;
-  vertical-align: middle;
-  margin-right: 8px;
-}
-/* Efeitos fade */
-.fade-out {
+
+/* ===== FADE IN/OUT (Conteúdo) ===== */
+.hidden {
   opacity: 0;
-  transition: opacity 1s ease;
+  pointer-events: none;
 }
 
 .fade-in {
-  opacity: 1;
+  opacity: 1 !important;
+  pointer-events: auto;
   transition: opacity 1s ease;
 }
 
-/* Tema escuro */
-.dark-mode {
-  background-color: #121212;
-  color: #f1f1f1;
-}
-.start-screen {
-  position: fixed;
-  inset: 0;
-  background: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  transition: opacity 0.5s ease;
+/* ===== CORPO GERAL E TEMA CLARO ===== */
+body {
+  transition: background-color 0.4s ease, color 0.4s ease;
+  overflow: hidden;
+  height: 100vh;
+  /* Cor de fundo do modo CLARO */
+  background: linear-gradient(120deg, #fafbfcff, #e3e3e3fd);
 }
 
-.start-screen.fade-out {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.app-buttons {
-  display: flex;
-  gap: 20px;
-  margin-top: 20px;
-}
-
-.app-btn {
-  background: #007bff;
-  color: white;
-  border: none;
-  border-radius: 20px;
-  padding: 12px 25px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: transform 0.2s, background 0.3s;
-}
-
-.app-btn:hover {
-  transform: scale(1.05);
-  background: #0056b3;
-}
-
-/* ===== Botão HOME ===== */
-.home-button {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  background: #007bff;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 45px;
-  height: 45px;
-  font-size: 22px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease, background 0.3s ease;
-  z-index: 1100;
-}
-
-.home-button:hover {
-  transform: scale(1.1);
-  background: #0056b3;
-}
-
-/* Esconde o botão enquanto estiver na tela inicial */
-.start-screen-active .home-button {
-  display: none;
-}
-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 0;
-}
-/* ===== REMOVE SETAS DOS INPUTS NUMBER ===== */
+/* Remove setas dos inputs number */
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
@@ -197,74 +105,31 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 input[type="number"] {
-  -moz-appearance: textfield; /* remove no Firefox */
+  -moz-appearance: textfield;
 }
 
-/* === SLIDERS === */
-.slider {
-  overflow: hidden;
-  background-color: white;
-  margin: 0 15px;
-  height: 80px;
-  width: 20px;
-  border-radius: 30px;
-  box-shadow: 15px 15px 20px rgba(0, 0, 0, 0.1), -15px -15px 30px #fff,
-    inset -5px -5px 10px rgba(0, 0, 255, 0.1),
-    inset 5px 5px 10px rgba(0, 0, 0, 0.1);
-  position: relative;
-}
-
-.slider::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 20px;
-  width: 70px;
-  border-radius: 100%;
-  box-shadow: inset 0px 0px 0px rgba(0, 0, 0, 0.3), 0px 420px 0 400px #2697f3,
-    inset 0px 0px 0px rgba(0, 0, 0, 0.1);
-  animation: animate_2 2.5s ease-in-out infinite;
-  animation-delay: calc(-0.09s * var(--i));
-}
-
-@keyframes animate_2 {
-  0% {
-    transform: translateY(250px) rotate(-80deg);
-    filter: hue-rotate(0deg);
-  }
-  50% {
-    transform: translateY(0) rotate(0deg);
-  }
-  100% {
-    transform: translateY(250px) rotate(80deg);
-    filter: hue-rotate(180deg);
-  }
-}
-
-/* ===== CONTEÚDO PRINCIPAL ===== */
+/* ===== CONTEÚDO PRINCIPAL (PTEMP) ===== */
 #conteudo {
   position: relative;
   z-index: 10;
-  opacity: 1;
   transition: opacity 1s ease-in-out;
 }
 
-/* ===== SENSOR (IMAGEM) ===== */
+/* Imagem do Sensor */
 .sensor-image {
   position: fixed;
-  bottom: -85px;
+  bottom: -110px;
   left: 50%;
   transform: translateX(-50%);
   width: 20vw;
   max-width: 400px;
   min-width: 380px;
+  content: url("Img/SensorFinal.png"); /* Imagem CLARA padrão */
 }
 
-/* ===== INPUTS PRINCIPAIS ===== */
 .inputs-container {
   position: fixed;
-  bottom: 365px;
+  bottom: 325px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -273,7 +138,7 @@ input[type="number"] {
   width: 350px;
 }
 
-/* ===== BLOCO: SELEÇÃO DO SENSOR ===== */
+/* ===== 1. BLOCO: SELEÇÃO DO SENSOR (mantendo a posição) ===== */
 .sensor-container {
   display: flex;
   flex-direction: column;
@@ -299,9 +164,15 @@ input[type="number"] {
   font-size: 18px;
   text-align: center;
   cursor: pointer;
+  /* Posição: mantida */
+  position: fixed;
+  bottom: 310px;
+  font-size: 14px;
+  color: #ffffff;
+  margin-bottom: 5px;
 }
 
-/* ===== BLOCO: FAIXA DO SENSOR ===== */
+/* ===== 2. BLOCO: FAIXA DO SENSOR (mantendo a posição) ===== */
 .faixa-container {
   display: flex;
   flex-direction: column;
@@ -314,6 +185,7 @@ input[type="number"] {
   height: 80px;
   width: 215px;
   box-shadow: 0 0 8px rgba(194, 192, 192, 0.8);
+  /* Posição: mantida */
   position: fixed;
   bottom: 225px;
   left: 50%;
@@ -334,7 +206,7 @@ input[type="number"] {
   gap: 15px;
 }
 
-.inline-inputs input {
+.faixa-container .inline-inputs input {
   width: 80px;
   height: 30px;
   border-radius: 6px;
@@ -347,14 +219,15 @@ input[type="number"] {
   outline: 1px solid #e9e9e95e;
 }
 
-/* ===== BLOCO: RESISTÊNCIA E TEMPERATURA (INPUTS) ===== */
+/* ===== 3. BLOCO: RESISTÊNCIA E TEMPERATURA (INPUTS) (mantendo a posição) ===== */
 .resistencia-container {
   display: flex;
   justify-content: center;
-  align-items: flex-start; /* garante alinhamento uniforme pelo topo */
+  align-items: flex-start;
   gap: 35px;
+  /* Posição: mantida */
   position: fixed;
-  bottom: 138px; /* mantém na posição atual aproximada */
+  bottom: 138px;
   left: 50%;
   transform: translateX(-50%);
 }
@@ -380,10 +253,10 @@ input[type="number"] {
   border-radius: 15px;
   font-size: 16px;
   text-align: center;
-  background: #ffffffff; /* igual às outputs */
+  background: #ffffffff;
   border: 2px solid #dcdadaff;
   outline: 1px solid #d3d3d3ff;
-  color: #404040ff; /* texto branco */
+  color: #404040ff;
   box-shadow: 0 0 8px rgba(184, 184, 184, 0.7);
   transition: all 0.2s ease-in-out;
 }
@@ -393,12 +266,13 @@ input[type="number"] {
   box-shadow: 0 0 12px rgba(0, 0, 0, 1);
 }
 
-/* ===== BLOCO: OUTPUTS ===== */
+/* ===== 4. BLOCO: OUTPUTS (mantendo a posição) ===== */
 .output-container {
   display: flex;
   justify-content: center;
   align-items: flex-start;
   gap: 40px;
+  /* Posição: mantida */
   position: fixed;
   bottom: 0px;
   left: 50%;
@@ -428,7 +302,7 @@ input[type="number"] {
   font-size: 16px;
   text-align: center;
   background: #fffdfdff;
-  color: #0033ffff; /* verde para saída */
+  color: #0033ffff;
   border: 2px solid #d6d5d5ff;
   outline: 1px solid #6564645e;
   box-shadow: 0 0 8px rgba(190, 189, 189, 1);
@@ -439,6 +313,7 @@ input[type="number"] {
   background: #fafafdfe;
   box-shadow: 0 0 12px rgba(34, 0, 255, 1);
 }
+
 .output-container select {
   position: relative;
   width: 70px;
@@ -456,8 +331,9 @@ input[type="number"] {
 .output-container select:hover {
   background-color: #5229f8ff;
 }
-/* ===== SAÍDA TEMPERATURA FIXA ===== */
-.saida-temp-fixa {
+
+/* Saída Temperatura (abaixo do sensor) */
+#saidaTemp {
   position: fixed;
   bottom: -55px;
   left: 51%;
@@ -473,50 +349,26 @@ input[type="number"] {
   box-shadow: 0 0 10px rgba(108, 108, 109, 1);
 }
 
-/* Se for um input, garante que o texto placeholder também fique branco */
-.saida-temp-fixa::placeholder {
+#saidaTemp::placeholder {
   color: #fff !important;
   opacity: 1;
 }
 
-#tipoSensor {
+/* ===== 5. BLOCO: BOTÕES (mantendo a posição) ===== */
+.botoes-calculo {
+  /* Posição original: os botões estão *dentro* do .inputs-container
+     que tem 'bottom: 365px' e estão posicionados via margin/bottom
+     em relação ao container. */
   position: fixed;
-  bottom: 310px;
-  font-size: 14px;
-  color: #ffffff;
-  text-align: center;
-  margin-bottom: 5px;
-}
-.controls {
-  position: fixed;
+  bottom: 80px; /* Ajuste para centralizar o grupo no novo layout fixo */
   left: 50%;
-  bottom: -18px;
   transform: translateX(-50%);
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-}
-.btn-minus,
-.btn-plus {
-  background: linear-gradient(135deg, #f7f5f5ff, #fdfcfcff);
-  color: #a1a1a3ff;
-  border: 2px solid #e0ddddff;
-  text-align: center;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(171, 169, 169, 0.8);
-  width: 35px;
-  height: 30px;
-  font-size: 20px;
-  cursor: pointer;
-  margin: 0 5px;
+  gap: 20px; /* Espaço entre os botões */
 }
 
-/* ===== BOTÕES ===== */
 #btnCalcular,
 #btnCalcularRes {
-  position: relative;
   display: flex;
-  bottom: 55px;
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, #fbfbfbff, #ffffffff);
@@ -524,12 +376,14 @@ input[type="number"] {
   font-size: 17px;
   border: 2px solid #e6e6e6fe;
   border-radius: 25px;
-  margin: 10px auto;
-  padding: 20px;
   cursor: pointer;
   transition: all 0.3s ease;
   width: 120px;
+  height: 50px; /* Definindo altura fixa para melhor controle */
   box-shadow: 0 0 10px rgba(152, 152, 152, 1);
+  padding: 0; /* Remove padding extra que estava conflitando */
+  /* Remove 'position: relative; bottom: 55px; margin: 10px auto;' do código original
+     e usa o pai fixo para posicionamento absoluto, mantendo a aparência */
 }
 
 #btnCalcular:hover,
@@ -539,13 +393,51 @@ input[type="number"] {
   transform: scale(0.95);
 }
 
-/* ===== MODO ESCURO COMPLETO ===== */
+/* ===== SWITCH FIXO GLOBAL (mantendo a posição) ===== */
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 60px;
+  height: 30px;
+  border-radius: 30px;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 3px;
+  box-shadow: inset 2px 2px 5px #cfcfcf, inset -2px -2px 5px #ffffff;
+  transition: background-color 0.4s ease, box-shadow 0.4s ease;
+  z-index: 1000;
+  border: none;
+}
+
+.switch-handle {
+  width: 24px;
+  height: 24px;
+  background: linear-gradient(145deg, #773dff, #0c4cfc);
+  border-radius: 50%;
+  transition: transform 0.4s ease, background 0.4s ease;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  transform: translateX(0);
+}
+
+/* ================================================= */
+/* ============= MODO ESCURO COMPLETO ============== */
+/* ================================================= */
+
 body.dark-mode {
   background: linear-gradient(to bottom, #04000d, #120f2e);
   color: #eaeaea;
 }
 
-/* ===== Sensor select ===== */
+/* Imagem do Sensor - MODO DARK */
+body.dark-mode .sensor-image {
+  content: url("Img/Darkv1.png");
+}
+
+/* 1. Sensor select (Dark Mode) */
 body.dark-mode .sensor-container select {
   background: linear-gradient(35deg, #7700ffff, #f80000ff);
   color: #fbfbfbff;
@@ -553,7 +445,7 @@ body.dark-mode .sensor-container select {
   box-shadow: 0 0 10px rgba(60, 60, 60, 0.5);
 }
 
-/* ===== Faixa do sensor ===== */
+/* 2. Faixa do sensor (Dark Mode) */
 body.dark-mode .faixa-container {
   background: rgba(20, 20, 20, 0.6);
   border: 2px solid rgba(100, 100, 100, 0.3);
@@ -567,8 +459,8 @@ body.dark-mode .faixa-container h3 {
   color: #cfcfcf;
 }
 
-/* ===== Inputs de faixa ===== */
-body.dark-mode .inline-inputs input {
+/* Inputs de faixa (Dark Mode) */
+body.dark-mode .faixa-container .inline-inputs input {
   background: linear-gradient(to bottom, #111, #0d0d0d);
   color: #e5e5e5;
   border: 2px solid #222;
@@ -576,7 +468,7 @@ body.dark-mode .inline-inputs input {
   box-shadow: 0 0 10px rgba(0, 0, 0, 1);
 }
 
-/* ===== Inputs resistência e temperatura ===== */
+/* 3. Inputs resistência e temperatura (Dark Mode) */
 body.dark-mode .resistencia-container h3 {
   color: #dcdcdc;
 }
@@ -589,7 +481,7 @@ body.dark-mode .resistencia-container input {
   box-shadow: 0 0 10px rgba(10, 10, 10, 0.8);
 }
 
-/* ===== Outputs ===== */
+/* 4. Outputs (Dark Mode) */
 body.dark-mode .output-container h3 {
   color: #ffffff;
   text-shadow: 0 0 6px rgba(160, 0, 255, 0.8);
@@ -614,15 +506,15 @@ body.dark-mode .output-container select:hover {
   background: linear-gradient(to bottom, #4b0082, #8a2be2);
 }
 
-/* ===== Saída temperatura fixa ===== */
-body.dark-mode .saida-temp-fixa {
+/* Saída temperatura fixa (Dark Mode) */
+body.dark-mode #saidaTemp {
   background: linear-gradient(145deg, #f90000ff, #d710ffff);
   color: #fffffcff !important;
   border: 1px solid #2a2a2a;
   box-shadow: 0 0 10px rgba(6, 5, 4, 1);
 }
 
-/* ===== Botões ===== */
+/* 5. Botões (Dark Mode) */
 body.dark-mode #btnCalcular,
 body.dark-mode #btnCalcularRes {
   background: linear-gradient(135deg, #141414, #252525);
@@ -638,58 +530,7 @@ body.dark-mode #btnCalcularRes:hover {
   box-shadow: 0 0 20px rgba(90, 0, 255, 0.6);
 }
 
-/* ===== Switch ===== */
-body.dark-mode .theme-switch {
-  background: linear-gradient(145deg, #0a0a0a, #181818);
-  box-shadow: inset 3px 3px 6px #050505, inset -3px -3px 6px #252525;
-}
-
-body.dark-mode .switch-handle {
-  left: 33px;
-  background: linear-gradient(145deg, #f3f3f6ff, #a100ff);
-  box-shadow: 0 0 10px rgba(2, 0, 5, 0.8);
-}
-
-/* ===== Botões de controle ===== */
-body.dark-mode .btn-minus,
-body.dark-mode .btn-plus {
-  background: linear-gradient(35deg, #f20a0aff, #ca1de9ff);
-  color: #040704ff;
-  border: 2px solid #2a2a2a;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.9);
-}
-/* ===== SWITCH FIXO GLOBAL ===== */
-.theme-toggle {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  width: 60px;
-  height: 30px;
-  border-radius: 30px;
-  background-color: #f0f0f0;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 3px;
-  box-shadow: inset 2px 2px 5px #cfcfcf, inset -2px -2px 5px #ffffff;
-  transition: background-color 0.4s ease, box-shadow 0.4s ease;
-  z-index: 1000;
-  border: none;
-}
-
-/* Bolinha do switch */
-.switch-handle {
-  width: 24px;
-  height: 24px;
-  background: linear-gradient(145deg, #773dff, #0c4cfc);
-  border-radius: 50%;
-  transition: transform 0.4s ease, background 0.4s ease;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-  transform: translateX(0);
-}
-
-/* ===== MODO ESCURO ===== */
+/* Switch (Dark Mode) */
 body.dark-mode .theme-toggle {
   background-color: #1d1d1dff;
   box-shadow: inset 2px 2px 5px #111, inset -2px -2px 5px #222;
@@ -699,147 +540,116 @@ body.dark-mode .switch-handle {
   transform: translateX(30px);
   background: linear-gradient(145deg, #fe05e5ff, #1500ffff);
 }
-
-/* ===== FADE GERAL ===== */
-body {
-  transition: background-color 0.4s ease, color 0.4s ease;
-}
-/* ====== TELA INICIAL ====== */
-.home-screen {
-  position: fixed;
-  inset: 0;
-  background: #070707ff;
-  color: #878484ff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  z-index: 999;
-  transition: opacity 0.5s ease;
-}
-
-.button-group {
-  display: flex;
-  gap: 0px;
-  margin-top: 10px;
-  flex-direction: column;
-}
-
-.menu-btn {
-  padding: 12px 28px;
-  font-size: 16px;
-  border: none;
-
-  border-radius: 30px;
-  cursor: pointer;
-
-  color: #000000;
-  transition: transform 0.3s ease, background 0.3s ease;
-}
-
-.menu-btn:hover {
-  transform: scale(1.05);
-}
-
-/* ====== TELA EM DESENVOLVIMENTO ====== */
-#devScreen {
-  position: fixed;
-  inset: 0;
-  background: linear-gradient(135deg, #050505ff, #1d1c1cff);
-  color: #f8f8f8ff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  z-index: 1000;
-}
-@keyframes rgb-pulse {
-  0% {
-    background-position: 0% 50%;
+/* ================================
+   RESPONSIVIDADE - CELULARES PEQUENOS
+   ================================ */
+@media (max-width: 480px) {
+  /* Sensor menor */
+  .sensor-image {
+    width: 55vw;
+    max-width: 260px;
+    min-width: 200px;
+    bottom: -60px;
   }
-  50% {
-    background-position: 100% 50%;
+
+  /* Container principal mais compacto */
+  .inputs-container {
+    width: 260px;
+    bottom: 250px;
   }
-  100% {
-    background-position: 0% 50%;
+
+  /* Select do sensor */
+  .sensor-container select {
+    width: 180px;
+    font-size: 12px;
+    bottom: 260px;
   }
-}
 
-body.dark-mode #devScreen {
-  /* Altera a forma de display para que a animação funcione bem */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  z-index: 1000;
-  color: #fefdfdff;
-  background: linear-gradient(
-    40deg,
-    #7d12e1ff,
-    /* Roxo Escuro */ #242323ff,
-    /* Vermelho Escuro */ #331a00,
-    /* Laranja Escuro */ #160033ff,
-    /* Verde Escuro */ #003333,
-    /* Ciano Escuro */ #000033,
-    /* Azul Escuro */ #1a0033 /* Volta para Roxo */
-  );
-  background-size: 400% 400%;
-  animation: rgb-pulse 20s ease infinite; /* Use um tempo mais longo para um fundo sutil */
-}
+  .sensor-container label {
+    bottom: 305px;
+    font-size: 10px;
+  }
 
-body.dark-mode #devScreen h2 {
-  font-family: Montserrat, sans-serif;
-  color: #eeededff;
-  font-size: 18px;
-  text-align: center;
-}
-body.dark-mode #devScreen p {
-  font-family: Elms Sans, sans-serif;
-  color: #d4d2d2ff;
-  font-size: 14px;
-  text-align: center;
-}
-body.dark-mode #devScreen h1 {
-  position: absolute;
-  top: 98%;
-  left: 50%;
-  transform: translateX(-50%);
-  font-family: "Elms Sans", sans-serif;
-  color: #555455ff;
-  font-size: 12px;
-  text-align: center;
-  margin-bottom: 20px;
-}
-body.dark-mode #devScreen .home-button {
-  position: absolute;
-  top: 55%;
-  left: 50%;
-  background: linear-gradient(135deg, #2190ffff, #1003fff8);
-  transform: translateX(-50%);
-  font-family: "Elms Sans", sans-serif;
-  color: #e8e2e8ff;
-  font-size: 12px;
-  text-align: center;
-  margin-bottom: 20px;
-}
-.home-button {
-  width: 50px;
-  height: auto;
-  padding: 8px 15px;
-  font-size: 14px;
-  border-radius: 10px;
-  margin-top: 0px;
-  border: none;
-  background: linear-gradient(135deg, #0d72ee35, #190ee5a6);
-  color: #ffffff;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 12px;
-}
+  /* Faixa */
+  .faixa-container {
+    width: 180px;
+    height: 70px;
+    bottom: 185px;
+  }
 
-.hidden {
-  display: none;
+  .faixa-container h3 {
+    font-size: 12px;
+  }
+
+  .faixa-container input {
+    width: 60px !important;
+    height: 26px !important;
+    font-size: 12px !important;
+  }
+
+  /* Resistência e Temperatura */
+  .resistencia-container {
+    gap: 20px;
+    bottom: 110px;
+  }
+
+  .resistencia-container h3 {
+    font-size: 14px;
+  }
+
+  .resistencia-container input {
+    width: 70px;
+    height: 30px;
+    font-size: 14px;
+  }
+
+  /* Outputs */
+  .output-container {
+    gap: 25px;
+    bottom: -10px;
+  }
+
+  .output-container h3 {
+    font-size: 15px;
+  }
+
+  .output-container input {
+    width: 80px;
+    height: 30px;
+    font-size: 14px;
+  }
+
+  #saidaTemp {
+    width: 80px;
+    font-size: 14px;
+    bottom: -40px;
+  }
+
+  /* Botões */
+  .botoes-calculo {
+    bottom: 50px;
+    gap: 10px;
+  }
+
+  #btnCalcular,
+  #btnCalcularRes {
+    width: 100px;
+    height: 40px;
+    font-size: 15px;
+  }
+
+  /* Switch */
+  .theme-toggle {
+    width: 50px;
+    height: 25px;
+  }
+
+  .switch-handle {
+    width: 20px;
+    height: 20px;
+  }
+
+  body.dark-mode .switch-handle {
+    transform: translateX(25px);
+  }
 }

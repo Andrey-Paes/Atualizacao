@@ -11,9 +11,7 @@
     <link rel="stylesheet" href="style.css" />
   </head>
 
-  <body>
-    <!-- ======= LOADER ======= -->
-
+  <body class="dark-mode">
     <div class="loader">
       <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
         <defs>
@@ -34,47 +32,7 @@
         </defs>
       </svg>
     </div>
-
-    <!-- ======= TELA INICIAL ======= -->
-    <div id="homeScreen" class="home-screen">
-      <h1>Selecione o Aplicativo</h1>
-      <div class="button-group">
-        <!-- Botão PTEMP -->
-        <label class="toggle-container menu-btn" id="btnPTEMP">
-          <img src="Img/icon ptemp.png" alt="Ícone PTEMP" class="app-icon" />
-          <input type="checkbox" />
-          <div class="toggle-button">
-            <span class="btn-text"></span>
-          </div>
-        </label>
-
-        <!-- Botão mV -->
-        <label class="toggle-container menu-btn" id="btnMV">
-          <img src="Img/icon miliv.png" alt="Ícone mV" class="app-icon" />
-          <input type="checkbox" />
-          <div class="toggle-button">
-            <div class="glow"></div>
-            <div class="texture"></div>
-            <span class="btn-text"></span>
-          </div>
-        </label>
-      </div>
-    </div>
-
-    <!-- ======= TELA "EM DESENVOLVIMENTO" ======= -->
-    <div id="devScreen" class="hidden">
-      <h2>Em Desenvolvimento</h2>
-      <p>Disponível em breve!</p>
-      <h1>Dev Andreivison Paes</h1>
-      <button id="btnHomeDev" class="home-button">Voltar</button>
-    </div>
-
-    <!-- ======= TELA PTEMP ======= -->
     <div id="conteudo" class="hidden">
-      <!-- Botão HOME -->
-      <button id="btnHomeApp" class="home-button">Home</button>
-
-      <!-- Conteúdo do aplicativo PTEMP -->
       <img src="Img/SensorFinal.png" alt="Sensor" class="sensor-image" />
 
       <div class="inputs-container">
@@ -87,20 +45,11 @@
           </select>
         </div>
 
-        <div class="input-box faixa-container">
+        <div class="faixa-container">
           <h3>Faixa do Sensor (°C)</h3>
           <div class="inline-inputs">
-            <div class="custom-number">
-              <input type="number" id="faixaMin" value="0" step="1" />
-            </div>
-
-            <div class="custom-number">
-              <input type="number" id="faixaMax" value="100" step="1" />
-              <div class="controls">
-                <button class="btn-minus" data-target="faixaMax">−</button>
-                <button class="btn-plus" data-target="faixaMax">+</button>
-              </div>
-            </div>
+            <input type="number" id="faixaMin" value="0" step="1" />
+            <input type="number" id="faixaMax" value="100" step="1" />
           </div>
         </div>
 
@@ -129,22 +78,15 @@
           </div>
         </div>
 
-        <input
-          id="saidaTemp"
-          type="text"
-          placeholder="°C"
-          readonly
-          class="saida-temp-fixa"
-        />
+        <input id="saidaTemp" type="text" placeholder="°C" readonly />
 
-        <div class="input-box inline-inputs botoes-calculo">
+        <div class="inline-inputs botoes-calculo">
           <button id="btnCalcular">Calcule°C</button>
           <button id="btnCalcularRes">Calcule Ω</button>
         </div>
       </div>
     </div>
 
-    <!-- Switch de tema -->
     <button id="toggleTheme" class="theme-toggle">
       <div class="switch-handle"></div>
     </button>

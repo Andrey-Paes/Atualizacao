@@ -1,105 +1,35 @@
 // =============================================================
-// 1. LÓGICA DO LOADER (Executa Imediatamente) 🚀
+// 1. LOADER
 // =============================================================
-
-const appLoader = document.querySelector(".loader");
-// Tempo de duração do loader (em milissegundos, ex: 2 segundos)
-const loaderDuration = 6000;
-
-if (appLoader) {
-  // Inicia o timer para ocultar o loader.
-  setTimeout(() => {
-    appLoader.classList.add("hidden");
-  }, loaderDuration);
-}
-
-// =============================================================
-// 2. CONTROLE DE TELAS (Executa Após o DOM carregar)
-// =============================================================
-document.addEventListener("DOMContentLoaded", () => {
-  // elementos principais
-  const homeScreen = document.getElementById("homeScreen");
-  const devScreen = document.getElementById("devScreen");
+// Garante que o conteúdo só apareça após o loader terminar
+window.addEventListener("load", () => {
+  const loader = document.querySelector(".loader");
   const conteudo = document.getElementById("conteudo");
-  const toggleTheme = document.getElementById("toggleTheme"); // switch de tema
 
-  // Obtenha os inputs de checkbox DENTRO dos labels (Ajuste para o switch animado)
-  const btnPTEMP = document.getElementById("btnPTEMP");
-  const btnMV = document.getElementById("btnMV");
-  const inputPTEMP = btnPTEMP.querySelector('input[type="checkbox"]');
-  const inputMV = btnMV.querySelector('input[type="checkbox"]');
+  // Define um atraso de 1500ms (1.5s) para o loader
+  // OBS: O código inicial tinha dois timers para o loader (um de 6000ms e outro de 1500ms).
+  // Mantemos a lógica mais curta e eficiente no 'load'.
+  setTimeout(() => {
+    loader.classList.add("hidden");
 
-  const btnHomeDev = document.getElementById("btnHomeDev");
-  const btnHomeApp = document.getElementById("btnHomeApp");
-
-  // helpers pra mostrar/ocultar telas
-  function showHome() {
-    homeScreen.style.display = "flex";
-    devScreen.style.display = "none";
-    conteudo.style.display = "none";
-    toggleTheme.style.display = "none"; // esconde o switch na tela inicial
-
-    // ⚠️ REAJUSTE NECESSÁRIO PARA A ANIMAÇÃO DO SWITCH:
-    // Garante que ambos os switches voltem ao estado OFF (não checado) ao voltar para a Home
-    inputPTEMP.checked = false;
-    inputMV.checked = false;
-  }
-
-  function showApp() {
-    homeScreen.style.display = "none";
-    devScreen.style.display = "none";
-    conteudo.style.display = "block";
-    toggleTheme.style.display = "flex"; // mostra o switch no app
-  }
-
-  function showDev() {
-    homeScreen.style.display = "none";
-    devScreen.style.display = "flex";
-    conteudo.style.display = "none";
-    toggleTheme.style.display = "none"; // esconde o switch na tela de dev
-  }
-
-  // === estado inicial: HOME ===
-  showHome();
-
-  // === listeners ===
-  // ⚠️ ALTERADO: Usa "change" no input de checkbox para permitir a animação CSS.
-  inputPTEMP.addEventListener("change", () => {
-    if (inputPTEMP.checked) {
-      showApp();
-    } else {
-      // Opcional: Se desmarcar o PTEMP, volta para a home
-      showHome();
-    }
-  });
-
-  inputMV.addEventListener("change", () => {
-    if (inputMV.checked) {
-      showDev();
-    } else {
-      // Opcional: Se desmarcar o MV, volta para a home
-      showHome();
-    }
-  });
-
-  btnHomeDev.addEventListener("click", (e) => {
-    e.preventDefault();
-    showHome();
-  });
-
-  btnHomeApp.addEventListener("click", (e) => {
-    e.preventDefault();
-    showHome();
-  });
+    // Adiciona um pequeno atraso para o fade-in do conteúdo
+    setTimeout(() => {
+      conteudo.classList.remove("hidden");
+      // Certifica-se de que o elemento está visível (se for necessário usar a classe fade-in)
+      conteudo.style.opacity = "2";
+    }, 300);
+  }, 4500);
 });
-// (O resto do seu código, como o theme toggle e as funções de cálculo, vem aqui)
-// === THEME TOGGLE + troca de imagem com fade (versão aprimorada) ===
+
+// =============================================================
+// 2. THEME TOGGLE (Modo Escuro)
+// =============================================================
 (function () {
   const toggle = document.getElementById("toggleTheme");
   const body = document.body;
   const sensorImage = document.querySelector(".sensor-image");
 
-  // Pré-carrega as imagens pra evitar travamento na troca
+  // Pré-carrega as imagens para evitar travamento na troca
   const preload = (src) => {
     const img = new Image();
     img.src = src;
@@ -107,12 +37,13 @@ document.addEventListener("DOMContentLoaded", () => {
   preload("Img/SensorFinal.png");
   preload("Img/Darkv1.png");
 
-  // Função com fade controlado
+  // Função com fade controlado (mantida a lógica de fade-out/fade-in suave)
   function setSensorImage(src) {
     if (!sensorImage) return;
     sensorImage.style.transition = "opacity 0.4s ease";
     sensorImage.style.opacity = "0";
     setTimeout(() => {
+      // Usamos o 'src' no JS para controle, embora o CSS também defina 'content'
       sensorImage.src = src;
       sensorImage.onload = () => {
         sensorImage.style.opacity = "1";
@@ -120,10 +51,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 250);
   }
 
-  // === aplica tema salvo ===
-  const saved = localStorage.getItem("theme");
-  if (saved === "dark") {
+  // === Aplica tema salvo ===
+  const savedTheme = localStorage.getItem("theme");
+  const isDark = savedTheme === "dark";
+
+  if (isDark) {
     body.classList.add("dark-mode");
+    // O CSS deve cuidar da imagem, mas a chamada JS garante a transição se o CSS falhar
     setSensorImage("Img/Darkv1.png");
   } else {
     setSensorImage("Img/SensorFinal.png");
@@ -131,17 +65,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!toggle) return;
 
-  // remove possíveis eventos duplicados
-  toggle.replaceWith(toggle.cloneNode(true));
-  const newToggle = document.getElementById("toggleTheme");
-
-  newToggle.addEventListener("click", () => {
-    const isDark = body.classList.toggle("dark-mode");
-    localStorage.setItem("theme", isDark ? "dark" : "light");
-    setSensorImage(isDark ? "Img/Darkv1.png" : "Img/SensorFinal.png");
+  // Usa o elemento existente
+  toggle.addEventListener("click", () => {
+    const isDarkNow = body.classList.toggle("dark-mode");
+    localStorage.setItem("theme", isDarkNow ? "dark" : "light");
+    setSensorImage(isDarkNow ? "Img/Darkv1.png" : "Img/SensorFinal.png");
   });
 })();
-// === elementos DOM ===
+
+// =============================================================
+// 3. LÓGICA DE CÁLCULO PTEMP
+// =============================================================
+
+// === Elementos DOM ===
+// OBS: 'btn' renomeado para 'btnCalcular' para clareza
 const faixaMinEl = document.getElementById("faixaMin");
 const faixaMaxEl = document.getElementById("faixaMax");
 const resEl = document.getElementById("res");
@@ -149,65 +86,82 @@ const saidaEl = document.getElementById("saida");
 const tempEl = document.getElementById("saidaTemp");
 const inputTempEl = document.getElementById("inputTemp");
 const saidaResEl = document.getElementById("saidaRes");
-const btn = document.getElementById("btnCalcular");
+const btnCalcular = document.getElementById("btnCalcular");
 const btnCalcularRes = document.getElementById("btnCalcularRes");
 const tipoSensorEl = document.getElementById("tipoSensor");
+const tipoSaidaEl = document.getElementById("tipoSaida");
 
-// === função para obter o R0 conforme o tipo de sensor ===
+// Constantes Callendar-Van Dusen
+const A = 3.9083e-3;
+const B = -5.775e-7;
+
+// === Funções de Conversão ===
 function obterR0() {
   const tipo = tipoSensorEl.value;
-  if (tipo === "PT100") return 100;
   if (tipo === "PT500") return 500;
   if (tipo === "PT1000") return 1000;
-  return 100;
+  return 100; // Padrão PT100
 }
 
-// === converte resistência -> temperatura ===
 function resistenciaParaTemperatura(R) {
   const R0 = obterR0();
-  const A = 3.9083e-3;
-  const B = -5.775e-7;
-
   if (R <= 0) return null;
 
   const discriminante = A * A - 4 * B * (1 - R / R0);
   if (discriminante < 0) return null;
 
   const T = (-A + Math.sqrt(discriminante)) / (2 * B);
-  if (T < -200 || T > 850) return null;
+
+  if (T < -200 || T > 850) return null; // Limites de precisão
 
   return T;
 }
 
-// === converte temperatura -> resistência ===
 function temperaturaParaResistencia(T) {
   const R0 = obterR0();
-  const A = 3.9083e-3;
-  const B = -5.775e-7;
-
   if (T < -200 || T > 850) return null;
 
   return R0 * (1 + A * T + B * T * T);
 }
 
-//=== cálculo resistência -> temperatura -> corrente ou tensão ===
-function calcular() {
+// === Calcula Corrente/Tensão (Saída do Transmissor) ===
+function calcularSaida(temp, faixaMin, faixaMax, tipoSaida) {
+  const rangeTemp = faixaMax - faixaMin;
+  let percent = (temp - faixaMin) / rangeTemp;
+
+  // Limita o percentual de 0 a 1 (0% a 100%) para clipping da saída
+  percent = Math.min(Math.max(percent, 0), 1);
+
+  if (tipoSaida === "ma") {
+    // 4-20 mA (Offset de 4 mA)
+    const mA = 4 + percent * 16;
+    return mA.toFixed(2) + " mA";
+  } else if (tipoSaida === "v") {
+    // 0-10 V (Offset de 0 V)
+    const v = percent * 10;
+    return v.toFixed(2) + " V";
+  }
+}
+
+// =============================================================
+// 4. LISTENERS E FUNÇÕES DE AÇÃO (Consolidadas)
+// =============================================================
+
+// === Ação: Calcule °C (Resistência -> Temperatura + Saída) ===
+function calcularTemperaturaESaida() {
   const faixaMin = parseFloat(faixaMinEl.value);
   const faixaMax = parseFloat(faixaMaxEl.value);
   const R = parseFloat(resEl.value);
-  const tipoSaida = document.getElementById("tipoSaida").value; // pega a escolha do usuário
 
+  // Limpa outputs
   tempEl.value = "";
   saidaEl.value = "";
+  saidaResEl.value = "";
+  inputTempEl.value = "";
 
   if (isNaN(R) || R <= 0) {
     alert("⚠️ Digite uma resistência válida (Ω) maior que 0.");
     resEl.focus();
-    return;
-  }
-
-  if (faixaMin < -0 || faixaMax > 850) {
-    alert("❌ Faixa inválida: -0 a 850°C.");
     return;
   }
 
@@ -217,47 +171,73 @@ function calcular() {
     return;
   }
 
+  if (faixaMin < -200 || faixaMax > 850) {
+    alert("❌ Faixa inválida: utilize valores entre -200°C e 850°C.");
+    return;
+  }
+
   const temp = resistenciaParaTemperatura(R);
   if (temp === null) {
-    tempEl.value = "Fora da faixa";
+    tempEl.value = "R fora da faixa";
     saidaEl.value = "—";
     return;
   }
 
   tempEl.value = temp.toFixed(2) + " °C";
-
-  if (tipoSaida === "ma") {
-    let mA = 4 + ((temp - faixaMin) / (faixaMax - faixaMin)) * 16;
-    if (mA < 4) mA = 4;
-    if (mA > 20) mA = 20;
-    saidaEl.value = mA.toFixed(2) + " mA";
-  } else if (tipoSaida === "v") {
-    let v = ((temp - faixaMin) / (faixaMax - faixaMin)) * 10;
-    if (v < 0) v = 0;
-    if (v > 10) v = 10;
-    saidaEl.value = v.toFixed(2) + " V";
-  }
+  saidaEl.value = calcularSaida(temp, faixaMin, faixaMax, tipoSaidaEl.value);
 }
-// === cálculo temperatura -> resistência ===
-function calcularResistencia() {
+
+// === Ação: Calcule Ω (Temperatura -> Resistência + Saída) ===
+function calcularResistenciaESaida() {
+  const faixaMin = parseFloat(faixaMinEl.value);
+  const faixaMax = parseFloat(faixaMaxEl.value);
   const T = parseFloat(inputTempEl.value);
+
+  // Limpa outputs
+  resEl.value = "";
+  saidaEl.value = "";
   saidaResEl.value = "";
+  tempEl.value = "";
 
   if (isNaN(T)) {
-    alert("⚠️ Digite uma temperatura válida.");
+    alert("⚠️ Digite uma temperatura válida (°C).");
     inputTempEl.focus();
+    return;
+  }
+
+  if (T < -200 || T > 850) {
+    alert(
+      "❌ Temperatura fora da faixa de precisão do sensor (-200°C a 850°C)."
+    );
+    return;
+  }
+
+  if (faixaMin >= faixaMax) {
+    alert("❌ O valor mínimo deve ser MENOR que o máximo.");
+    faixaMinEl.focus();
     return;
   }
 
   const R = temperaturaParaResistencia(T);
   if (R === null) {
-    alert("❌ Temperatura fora da faixa: -200 a 850°C.");
+    saidaResEl.value = "T fora da faixa";
+    saidaEl.value = "—";
     return;
   }
 
   saidaResEl.value = R.toFixed(2) + " Ω";
+  saidaEl.value = calcularSaida(T, faixaMin, faixaMax, tipoSaidaEl.value);
 }
 
-// === eventos ===
-btn.addEventListener("click", calcular);
-btnCalcularRes.addEventListener("click", calcularResistencia);
+// === Event Listeners ===
+btnCalcular.addEventListener("click", calcularTemperaturaESaida);
+btnCalcularRes.addEventListener("click", calcularResistenciaESaida);
+
+tipoSensorEl.addEventListener("change", () => {
+  // Apenas limpa os resultados para forçar um novo cálculo com o novo R0
+  resEl.value = "";
+  inputTempEl.value = "";
+  saidaEl.value = "";
+  saidaResEl.value = "";
+  tempEl.value = "";
+});
