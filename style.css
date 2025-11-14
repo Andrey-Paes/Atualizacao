@@ -328,45 +328,22 @@ input[type="number"] {
 
 .output-container select {
   position: relative;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  background-image: linear-gradient(to bottom, #4e62fbff, #57caffff);
-  background-repeat: no-repeat;
-  background-position: right 6px center;
-  background-size: 12px;
-  width: 70px;
-  height: 20px;
-  border-radius: 10px;
-  border: 1px solid #c2bfbfff;
-  text-align: center;
-  font-size: 10px;
-  outline: none;
   background: linear-gradient(to bottom, #4e62fbff, #57caffff);
-  color: #ffffffff;
-  transition: 0.3s;
+  color: #040404ff;
+  border-radius: 10px;
+  border: 1px solid #c2bfbf;
+  padding-right: 24px; /* espaço pro ícone */
 }
 
-.output-container select:hover {
-  background-color: #5229f8ff;
-}
-
-/* Custom arrow for Chrome & Safari */
 .output-container select::-ms-expand {
   display: none;
 }
 
-.output-container select::after {
-  content: "▼";
-  position: absolute;
-  right: 8px;
-  top: 50%;
-  font-size: 10px;
-  color: #ffffff;
-  pointer-events: none;
-  transform: translateY(-50%);
+.output-container select {
+  background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='14' viewBox='0 0 24 24' width='14' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 6px center;
 }
-
 /* Saída Temperatura (abaixo do sensor) */
 #saidaTemp {
   position: fixed;
