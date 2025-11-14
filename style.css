@@ -41,7 +41,7 @@
   position: absolute;
   inset: 0;
   margin: auto;
-  width: 50px;
+  width: 40px;
   aspect-ratio: 1/1;
   animation: 1.5s ease-out infinite loader;
   border-radius: 50%;
@@ -55,8 +55,8 @@
   animation-delay: 0.75s;
   background: linear-gradient(
     to top,
-    rgba(136, 114, 231, 1),
-    rgba(255, 10, 161, 1)
+    rgba(3, 254, 141, 1),
+    rgba(59, 5, 255, 1)
   );
 }
 
@@ -72,7 +72,7 @@
   }
 
   75% {
-    transform: translateY(-70%);
+    transform: translateY(-50%);
   }
 }
 
@@ -85,7 +85,7 @@
 .fade-in {
   opacity: 1 !important;
   pointer-events: auto;
-  transition: opacity 1s ease;
+  transition: opacity 5s ease;
 }
 
 /* ===== CORPO GERAL E TEMA CLARO ===== */
@@ -118,7 +118,7 @@ input[type="number"] {
 /* Imagem do Sensor */
 .sensor-image {
   position: fixed;
-  bottom: -110px;
+  bottom: -85px;
   left: 50%;
   transform: translateX(-50%);
   width: 20vw;
@@ -129,7 +129,7 @@ input[type="number"] {
 
 .inputs-container {
   position: fixed;
-  bottom: 325px;
+  bottom: 365px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -356,11 +356,9 @@ input[type="number"] {
 
 /* ===== 5. BLOCO: BOTÕES (mantendo a posição) ===== */
 .botoes-calculo {
-  /* Posição original: os botões estão *dentro* do .inputs-container
-     que tem 'bottom: 365px' e estão posicionados via margin/bottom
-     em relação ao container. */
+  width: 400px;
   position: fixed;
-  bottom: 80px; /* Ajuste para centralizar o grupo no novo layout fixo */
+  bottom: 70px; /* Ajuste para centralizar o grupo no novo layout fixo */
   left: 50%;
   transform: translateX(-50%);
   gap: 20px; /* Espaço entre os botões */
@@ -540,116 +538,40 @@ body.dark-mode .switch-handle {
   transform: translateX(30px);
   background: linear-gradient(145deg, #fe05e5ff, #1500ffff);
 }
-/* ================================
-   RESPONSIVIDADE - CELULARES PEQUENOS
-   ================================ */
-@media (max-width: 480px) {
-  /* Sensor menor */
+@media (max-width: 376px) {
   .sensor-image {
-    width: 55vw;
-    max-width: 260px;
-    min-width: 200px;
-    bottom: -60px;
+    min-width: 375px;
   }
 
-  /* Container principal mais compacto */
   .inputs-container {
-    width: 260px;
-    bottom: 250px;
+    width: 90vw;
   }
 
-  /* Select do sensor */
-  .sensor-container select {
-    width: 180px;
-    font-size: 12px;
-    bottom: 260px;
+  .faixa-container {
+    bottom: 198px;
+    width: 50vw;
   }
 
+  .resistencia-container {
+    bottom: 135px;
+    width: 50vw;
+    gap: 25px;
+  }
+
+  .output-container {
+    gap: 20px;
+  }
   .sensor-container label {
-    bottom: 305px;
+    bottom: -330px;
     font-size: 10px;
   }
-
-  /* Faixa */
-  .faixa-container {
-    width: 180px;
-    height: 70px;
-    bottom: 185px;
-  }
-
-  .faixa-container h3 {
+  .sensor-container select {
     font-size: 12px;
+    bottom: -365px;
+    padding: 2px;
+    margin: 10px;
   }
-
-  .faixa-container input {
-    width: 60px !important;
-    height: 26px !important;
-    font-size: 12px !important;
-  }
-
-  /* Resistência e Temperatura */
-  .resistencia-container {
-    gap: 20px;
-    bottom: 110px;
-  }
-
-  .resistencia-container h3 {
-    font-size: 14px;
-  }
-
-  .resistencia-container input {
-    width: 70px;
-    height: 30px;
-    font-size: 14px;
-  }
-
-  /* Outputs */
-  .output-container {
-    gap: 25px;
-    bottom: -10px;
-  }
-
-  .output-container h3 {
-    font-size: 15px;
-  }
-
-  .output-container input {
-    width: 80px;
-    height: 30px;
-    font-size: 14px;
-  }
-
-  #saidaTemp {
-    width: 80px;
-    font-size: 14px;
-    bottom: -40px;
-  }
-
-  /* Botões */
-  .botoes-calculo {
-    bottom: 50px;
-    gap: 10px;
-  }
-
-  #btnCalcular,
-  #btnCalcularRes {
-    width: 100px;
-    height: 40px;
-    font-size: 15px;
-  }
-
-  /* Switch */
-  .theme-toggle {
-    width: 50px;
-    height: 25px;
-  }
-
-  .switch-handle {
-    width: 20px;
-    height: 20px;
-  }
-
-  body.dark-mode .switch-handle {
-    transform: translateX(25px);
+  .inline-inputs {
+    bottom: 70px;
   }
 }

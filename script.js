@@ -18,7 +18,7 @@ window.addEventListener("load", () => {
       // Certifica-se de que o elemento está visível (se for necessário usar a classe fade-in)
       conteudo.style.opacity = "2";
     }, 300);
-  }, 4500);
+  }, 5500);
 });
 
 // =============================================================
